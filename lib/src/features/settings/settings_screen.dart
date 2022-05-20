@@ -1,3 +1,4 @@
+import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +16,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: CargoBikeColors.lightGreen,
         title: const Text('Settings'),
       ),
       body: Column(

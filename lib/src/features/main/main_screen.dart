@@ -1,3 +1,4 @@
+import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget {
@@ -5,9 +6,19 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Main Screen'),
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Center(
+            child: Text('Main Screen'),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: CargoBikeColors.lightGreen,
+        onPressed: () {},
+        child: const Icon(Icons.add),
       ),
     );
   }
