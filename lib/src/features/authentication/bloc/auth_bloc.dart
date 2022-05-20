@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
-import 'package:cargo_bike/src/exceptions/password_exception.dart';
 import 'package:cargo_bike/src/utils/password_validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
