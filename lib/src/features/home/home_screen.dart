@@ -1,3 +1,4 @@
+import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:cargo_bike/src/features/history/history_screen.dart';
 import 'package:cargo_bike/src/features/main/main_screen.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: pageIndex,
           onTap: (index) => setState(() => pageIndex = index),
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.lightGreen,
+          selectedItemColor: CargoBikeColors.lightGreen,
           showSelectedLabels: false,
           showUnselectedLabels: false,
           unselectedItemColor: Colors.grey,
