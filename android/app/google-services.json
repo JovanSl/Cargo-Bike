@@ -29,6 +29,13 @@
             {
               "client_id": "129055605471-8ldniesmtkp8d2tbdijo82gd8q9jj0im.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "129055605471-8bbivu6lva55v00lip6selmj0ird6vb9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cargoBike"
+              }
             }
           ]
         }
