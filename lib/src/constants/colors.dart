@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
 class CargoBikeColors {
-  static Color lightGreen = const Color.fromRGBO(43, 226, 55, 1);
+  static Color lightGreen = const Color.fromARGB(222, 95, 208, 25);
 }

@@ -1,4 +1,6 @@
 import 'package:cargo_bike/src/features/authentication/bloc/auth_bloc.dart';
+import 'package:cargo_bike/src/features/new_order/bloc/new_order_bloc.dart';
+import 'package:cargo_bike/src/repositories/add_order_repository.dart';
 import 'package:cargo_bike/src/repositories/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -37,12 +39,19 @@ class _MyAppState extends State<MyApp> {
             RepositoryProvider<AuthRepository>(
               create: (context) => AuthRepository(),
             ),
+            RepositoryProvider<AddOrderRepository>(
+              create: (context) => AddOrderRepository(),
+            ),
           ],
           child: MultiBlocProvider(
             providers: [
               BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(repository: AuthRepository())
                   ..add(CheckUserStatusEvent()),
+              ),
+              BlocProvider<NewOrderBloc>(
+                create: (context) =>
+                    NewOrderBloc(repository: AddOrderRepository()),
               ),
             ],
             child: AnimatedBuilder(
