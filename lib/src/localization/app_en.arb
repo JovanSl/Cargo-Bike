@@ -1,6 +1,6 @@
 {
   "appTitle": "cargo_bike",
-  "@appTitle": {
-    "description": "The title of the application"
-  }
+  "test":"All Deliveries",
+  "language":"Language",
+  "settings":"Settings"
 }

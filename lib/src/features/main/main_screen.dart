@@ -1,9 +1,13 @@
 import 'package:cargo_bike/src/constants/colors.dart';
-import 'package:cargo_bike/src/features/new_order/new_order_screen.dart';
+import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
+import 'package:cargo_bike/src/features/new_delivery/new_order_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../new_order/bloc/new_order_bloc.dart';
+import '../../components/progress_indicator.dart';
+import '../new_delivery/bloc/new_delivery_bloc.dart';
+import 'components/order_list_tile.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -11,28 +15,42 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<NewOrderBloc, NewOrderState>(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.test),
+        backgroundColor: CargoBikeColors.lightGreen,
+      ),
+      body: BlocListener<NewDeliveryBloc, NewDeliveryState>(
         listener: (context, state) {
-          if (state is AddOrderSuccess) {
+          if (state is AddDeliverySuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Successfully created order')));
+                const SnackBar(content: Text('Successfully created Delivery')));
+            context.read<MainListBloc>().add(GetAllOrders());
           }
         },
-        builder: (context, state) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Center(
-                child: Text('Main Screen'),
-              ),
-            ],
-          );
-        },
+        child: BlocBuilder<MainListBloc, MainListState>(
+          builder: ((context, state) {
+            if (state is AllOrdersLoadingState) {
+              return const CargoBikeProgressIndicator();
+            }
+            if (state is AllOrdersState) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: ListView.builder(
+                  itemCount: state.order.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      DeliveryListTile(delivery: state.order[index]),
+                ),
+              );
+            } else {
+              return const SizedBox();
+            }
+          }),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: CargoBikeColors.lightGreen,
         onPressed: () {
-          context.read<NewOrderBloc>().add(SetOrderToInitial());
+          context.read<NewDeliveryBloc>().add(SetDeliveryToInitial());
           Navigator.push(
             context,
             MaterialPageRoute(

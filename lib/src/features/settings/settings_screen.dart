@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cargo_bike/src/constants/colors.dart';
+import 'package:cargo_bike/src/features/settings/components/circle_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../authentication/bloc/auth_bloc.dart';
 import 'settings_controller.dart';
@@ -14,23 +18,29 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String imageUrl = '';
+    File? image;
+
+    Map<String, String> lang = {'en': 'English', 'sr': 'Srpski'};
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CargoBikeColors.lightGreen,
-        title: const Text('Settings'),
+        title: Text(
+          AppLocalizations.of(context)!.settings,
+        ),
       ),
       body: Column(
         children: [
+          CircleImage(
+            selectedImage: (value) {
+              image = value;
+            },
+            onChange: () {},
+          ),
           Padding(
             padding: const EdgeInsets.all(16),
-            // Glue the SettingsController to the theme selection DropdownButton.
-            //
-            // When a user selects a theme from the dropdown list, the
-            // SettingsController is updated, which rebuilds the MaterialApp.
             child: DropdownButton<ThemeMode>(
-              // Read the selected themeMode from the controller
               value: controller.themeMode,
-              // Call the updateThemeMode method any time the user selects a theme.
               onChanged: controller.updateThemeMode,
               items: const [
                 DropdownMenuItem(
@@ -46,6 +56,39 @@ class SettingsScreen extends StatelessWidget {
                   child: Text('Dark Theme'),
                 )
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: DropdownButton<String>(
+              iconSize: 30,
+              hint: SizedBox(
+                child: Text(
+                  AppLocalizations.of(context)!.language,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              value: controller.locale.languageCode,
+              items: lang
+                  .map(
+                    (key, value) {
+                      return MapEntry(
+                        key,
+                        DropdownMenuItem<String>(
+                          value: key,
+                          child: SizedBox(
+                            child: Text(
+                              value,
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                  .values
+                  .toList(),
+              onChanged: (value) => controller.updateLocale(value!),
             ),
           ),
           Row(
