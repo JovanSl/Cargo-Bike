@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -49,18 +48,18 @@ class _CircleImageState extends State<CircleImage> {
               children: [
                 GestureDetector(
                   onTap: (() => pickImage(ImageSource.gallery)),
-                  child: const ListTile(
-                    leading: Icon(Icons.photo),
-                    title: Text('Gallery'),
+                  child: ListTile(
+                    leading: const Icon(Icons.photo),
+                    title: Text(AppLocalizations.of(context)!.gallery),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
                     pickImage(ImageSource.camera);
                   },
-                  child: const ListTile(
-                    leading: Icon(Icons.photo_camera),
-                    title: Text('Camera'),
+                  child: ListTile(
+                    leading: const Icon(Icons.photo_camera),
+                    title: Text(AppLocalizations.of(context)!.camera),
                   ),
                 ),
               ],

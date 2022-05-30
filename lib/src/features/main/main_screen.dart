@@ -22,8 +22,9 @@ class MainScreen extends StatelessWidget {
       body: BlocListener<NewDeliveryBloc, NewDeliveryState>(
         listener: (context, state) {
           if (state is AddDeliverySuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Successfully created Delivery')));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(AppLocalizations.of(context)!
+                    .successfullyCreatedDelivery)));
             context.read<MainListBloc>().add(GetAllOrders());
           }
         },

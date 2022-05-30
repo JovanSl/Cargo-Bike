@@ -3,6 +3,7 @@ import 'package:cargo_bike/src/models/recipient.dart';
 import 'package:cargo_bike/src/models/sender.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/new_delivery_bloc.dart';
 
@@ -32,9 +33,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(
-            'Create delivery',
-            style: TextStyle(color: Colors.black),
+          title: Text(
+            AppLocalizations.of(context)!.createDelivery,
+            style: const TextStyle(color: Colors.black),
           ),
           elevation: 0,
           foregroundColor: CargoBikeColors.lightGreen,
@@ -46,17 +47,17 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 color: CargoBikeColors.lightGreen),
             labelColor: Colors.black,
             indicatorColor: Colors.white,
-            tabs: const [
+            tabs: [
               Tab(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 18, right: 18),
-                  child: Text('Reception address'),
+                  padding: const EdgeInsets.only(left: 18, right: 18),
+                  child: Text(AppLocalizations.of(context)!.receptionAddress),
                 ),
               ),
               Tab(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 18, right: 18),
-                  child: Text('Delivery address'),
+                  padding: const EdgeInsets.only(left: 18, right: 18),
+                  child: Text(AppLocalizations.of(context)!.deliveryAddress),
                 ),
               ),
             ],
@@ -68,8 +69,8 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
               Navigator.of(context).pop();
             }
             if (state is AddDeliveryError) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text('Error ocured')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(AppLocalizations.of(context)!.error)));
             }
           },
           builder: (context, state) {
@@ -107,19 +108,20 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                             ),
                             InputFieldComponent(
                               controller: _senderName,
-                              lable: 'Name',
+                              lable: AppLocalizations.of(context)!.name,
                             ),
                             InputFieldComponent(
                               controller: _senderEmail,
-                              lable: 'Email Address',
+                              lable: AppLocalizations.of(context)!.emailAddress,
                             ),
                             InputFieldComponent(
                               controller: _senderPhone,
-                              lable: 'Phone number',
+                              lable: AppLocalizations.of(context)!.phoneNumber,
                             ),
                             InputFieldComponent(
                               controller: _senderAddress,
-                              lable: 'Address',
+                              lable: AppLocalizations.of(context)!
+                                  .receptionAddress,
                             ),
                           ],
                         ),
@@ -132,19 +134,20 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           ),
                           InputFieldComponent(
                             controller: _recipientName,
-                            lable: 'Name',
+                            lable: AppLocalizations.of(context)!.name,
                           ),
                           InputFieldComponent(
                             controller: _recipientAddress,
-                            lable: 'Address',
+                            lable:
+                                AppLocalizations.of(context)!.deliveryAddress,
                           ),
                           InputFieldComponent(
                             controller: _recipientPhone,
-                            lable: 'Phone Number',
+                            lable: AppLocalizations.of(context)!.phoneNumber,
                           ),
                           InputFieldComponent(
                             controller: _additionalInfo,
-                            lable: 'Additional info',
+                            lable: AppLocalizations.of(context)!.additionalInfo,
                           ),
                         ],
                       )
@@ -174,7 +177,8 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                                             address: _senderAddress.text)));
                               }
                             : null,
-                        child: const Text('Order')),
+                        child:
+                            Text(AppLocalizations.of(context)!.createDelivery)),
                   )
                 ],
               );
