@@ -9,7 +9,6 @@ import '../models/user.dart';
 class AuthRepository {
   FirebaseAuth auth = FirebaseAuth.instance;
   final _users = FirebaseFirestore.instance.collection('userInfo');
-  final _user = FirebaseAuth.instance.currentUser!.uid;
 
   Future<UserCredential> logInWithCredentials(
       {required String email, required String password}) async {
@@ -43,8 +42,10 @@ class AuthRepository {
       var imageurl = await uploadUserImage(image);
       user.imageUrl = imageurl;
     }
-    user.userId = _user;
-    return _users.doc(_user).set(user.toJson());
+    user.userId = FirebaseAuth.instance.currentUser!.uid;
+    return _users
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set(user.toJson());
   }
 
   Future<String> uploadUserImage(File image) async {
@@ -61,7 +62,7 @@ class AuthRepository {
 
   Future<UserModel> getUserInfo() async {
     UserModel currentUser = await _users
-        .doc(_user)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get()
         .then((value) => UserModel.fromSnapshot(value));
     return currentUser;
