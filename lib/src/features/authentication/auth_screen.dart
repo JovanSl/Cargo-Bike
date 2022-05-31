@@ -1,10 +1,11 @@
 import 'package:cargo_bike/src/constants/styles.dart';
 import 'package:cargo_bike/src/features/authentication/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'components/error_message.dart';
-import 'components/login_input_field.dart';
+import '../../components/cargo_bike_input_field.dart';
 
 class AuthScreen extends StatefulWidget {
   static const routeName = '/auth';
@@ -40,7 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   state is LoginErrorState) {
                 return Center(
                   child: Column(children: <Widget>[
-                    Text('Login Form',
+                    Text(AppLocalizations.of(context)!.loginForm,
                         style: CargoBikeStyle.textStyle.heading1Text),
                     const SizedBox(
                       height: 20,
@@ -49,16 +50,16 @@ class _AuthScreenState extends State<AuthScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _emailController,
-                      hintText: 'Email',
+                      hintText: AppLocalizations.of(context)!.emailAddress,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _passwordController,
-                      hintText: 'Password',
+                      hintText: AppLocalizations.of(context)!.password,
                       hideText: true,
                     ),
                     const SizedBox(
@@ -68,7 +69,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         onTap: () {
                           context.read<AuthBloc>().add(SwitchToRegister());
                         },
-                        child: const Text('Register')),
+                        child:
+                            Text(AppLocalizations.of(context)!.registerForm)),
                     const SizedBox(
                       height: 20,
                     ),
@@ -86,7 +88,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               );
                         },
                         child: Text(
-                          'Log In',
+                          AppLocalizations.of(context)!.logIn,
                           style: CargoBikeStyle.textStyle.heading4Text,
                         ))
                   ]),
@@ -96,7 +98,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 return Center(
                   child: Column(children: <Widget>[
                     Text(
-                      'Register Form',
+                      AppLocalizations.of(context)!.registerForm,
                       style: CargoBikeStyle.textStyle.heading1Text,
                     ),
                     const SizedBox(
@@ -106,24 +108,24 @@ class _AuthScreenState extends State<AuthScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _emailController,
-                      hintText: 'Email',
+                      hintText: AppLocalizations.of(context)!.emailAddress,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _passwordController,
-                      hintText: 'Password',
+                      hintText: AppLocalizations.of(context)!.password,
                       hideText: true,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _passwordConfirmController,
-                      hintText: 'Confirm Password',
+                      hintText: AppLocalizations.of(context)!.confirmPassword,
                       hideText: true,
                     ),
                     const SizedBox(
@@ -133,7 +135,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         onTap: () {
                           context.read<AuthBloc>().add(SwitchToRegister());
                         },
-                        child: const Text('Back to login')),
+                        child: Text(AppLocalizations.of(context)!.backToLogIn)),
                     const SizedBox(
                       height: 20,
                     ),
@@ -152,7 +154,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               );
                         },
                         child: Text(
-                          'Register',
+                          AppLocalizations.of(context)!.register,
                           style: CargoBikeStyle.textStyle.heading4Text,
                         ))
                   ]),

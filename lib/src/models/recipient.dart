@@ -12,6 +12,12 @@ class Recipient {
       required this.phone,
       required this.additionalInfo});
 
+  factory Recipient.fromMap(Map<String, dynamic> json) => Recipient(
+      name: json['name'],
+      address: json['address'],
+      phone: json['phone'],
+      additionalInfo: json['additionalInfo']);
+
   Map<String, dynamic> toJson() {
     return {
       'name': name,

@@ -1,9 +1,11 @@
 import 'package:cargo_bike/src/constants/colors.dart';
-import 'package:cargo_bike/src/features/new_order/bloc/new_order_bloc.dart';
 import 'package:cargo_bike/src/models/recipient.dart';
 import 'package:cargo_bike/src/models/sender.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'bloc/new_delivery_bloc.dart';
 
 class NewOrderScreen extends StatefulWidget {
   const NewOrderScreen({Key? key}) : super(key: key);
@@ -21,14 +23,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   final TextEditingController _recipientAddress = TextEditingController();
   final TextEditingController _recipientPhone = TextEditingController();
   final TextEditingController _additionalInfo = TextEditingController();
-  final bool _visible = false;
   bool _isEnabled = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +33,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(
-            'Create delivery',
-            style: TextStyle(color: Colors.black),
+          title: Text(
+            AppLocalizations.of(context)!.createDelivery,
+            style: const TextStyle(color: Colors.black),
           ),
           elevation: 0,
           foregroundColor: CargoBikeColors.lightGreen,
@@ -52,38 +47,38 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 color: CargoBikeColors.lightGreen),
             labelColor: Colors.black,
             indicatorColor: Colors.white,
-            tabs: const [
+            tabs: [
               Tab(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 18, right: 18),
-                  child: Text('Reception address'),
+                  padding: const EdgeInsets.only(left: 18, right: 18),
+                  child: Text(AppLocalizations.of(context)!.receptionAddress),
                 ),
               ),
               Tab(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 18, right: 18),
-                  child: Text('Delivery address'),
+                  padding: const EdgeInsets.only(left: 18, right: 18),
+                  child: Text(AppLocalizations.of(context)!.deliveryAddress),
                 ),
               ),
             ],
           ),
         ),
-        body: BlocConsumer<NewOrderBloc, NewOrderState>(
+        body: BlocConsumer<NewDeliveryBloc, NewDeliveryState>(
           listener: (context, state) {
-            if (state is AddOrderSuccess) {
+            if (state is AddDeliverySuccess) {
               Navigator.of(context).pop();
             }
-            if (state is AddOrderError) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text('Error ocured')));
+            if (state is AddDeliveryError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(AppLocalizations.of(context)!.error)));
             }
           },
           builder: (context, state) {
-            if (state is NewOrderInitial || state is StateWithButton) {
+            if (state is NewDeliveryInitial || state is StateWithButton) {
               if (state is StateWithButton) {
                 _isEnabled = true;
               }
-              if (state is NewOrderInitial) {
+              if (state is NewDeliveryInitial) {
                 _isEnabled = false;
               }
               return Stack(
@@ -91,7 +86,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 children: [
                   Form(
                     onChanged: () {
-                      context.read<NewOrderBloc>().add(CheckUserInputEvent(
+                      context.read<NewDeliveryBloc>().add(CheckUserInputEvent(
                           recipient: Recipient(
                               name: _recipientName.text,
                               address: _recipientAddress.text,
@@ -113,19 +108,20 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                             ),
                             InputFieldComponent(
                               controller: _senderName,
-                              lable: 'Name',
+                              lable: AppLocalizations.of(context)!.name,
                             ),
                             InputFieldComponent(
                               controller: _senderEmail,
-                              lable: 'Email',
+                              lable: AppLocalizations.of(context)!.emailAddress,
                             ),
                             InputFieldComponent(
                               controller: _senderPhone,
-                              lable: 'Phone number',
+                              lable: AppLocalizations.of(context)!.phoneNumber,
                             ),
                             InputFieldComponent(
                               controller: _senderAddress,
-                              lable: 'Email address',
+                              lable: AppLocalizations.of(context)!
+                                  .receptionAddress,
                             ),
                           ],
                         ),
@@ -138,19 +134,20 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           ),
                           InputFieldComponent(
                             controller: _recipientName,
-                            lable: 'Name',
+                            lable: AppLocalizations.of(context)!.name,
                           ),
                           InputFieldComponent(
                             controller: _recipientAddress,
-                            lable: 'Address',
+                            lable:
+                                AppLocalizations.of(context)!.deliveryAddress,
                           ),
                           InputFieldComponent(
                             controller: _recipientPhone,
-                            lable: 'Phone Number',
+                            lable: AppLocalizations.of(context)!.phoneNumber,
                           ),
                           InputFieldComponent(
                             controller: _additionalInfo,
-                            lable: 'Additional info',
+                            lable: AppLocalizations.of(context)!.additionalInfo,
                           ),
                         ],
                       )
@@ -165,20 +162,23 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                         ),
                         onPressed: _isEnabled
                             ? () {
-                                context.read<NewOrderBloc>().add(AddOrderEvent(
-                                    recipient: Recipient(
-                                        name: _recipientName.text,
-                                        address: _recipientAddress.text,
-                                        phone: _recipientPhone.text,
-                                        additionalInfo: _additionalInfo.text),
-                                    sender: Sender(
-                                        name: _senderName.text,
-                                        email: _senderEmail.text,
-                                        phone: _senderPhone.text,
-                                        address: _senderAddress.text)));
+                                context.read<NewDeliveryBloc>().add(
+                                    AddDeliveryEvent(
+                                        recipient: Recipient(
+                                            name: _recipientName.text,
+                                            address: _recipientAddress.text,
+                                            phone: _recipientPhone.text,
+                                            additionalInfo:
+                                                _additionalInfo.text),
+                                        sender: Sender(
+                                            name: _senderName.text,
+                                            email: _senderEmail.text,
+                                            phone: _senderPhone.text,
+                                            address: _senderAddress.text)));
                               }
                             : null,
-                        child: const Text('Order')),
+                        child:
+                            Text(AppLocalizations.of(context)!.createDelivery)),
                   )
                 ],
               );

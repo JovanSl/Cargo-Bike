@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class LoginInputField extends StatelessWidget {
+class CargoBikeInputField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool hideText;
 
-  const LoginInputField({
+  const CargoBikeInputField({
     Key? key,
     required this.controller,
     required this.hintText,
@@ -41,7 +41,7 @@ class LoginInputField extends StatelessWidget {
             ),
           ],
         ),
-        child: TextField(
+        child: TextFormField(
           controller: controller,
           decoration: InputDecoration(
             hintText: hintText,

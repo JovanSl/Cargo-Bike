@@ -1,6 +1,6 @@
 import 'package:cargo_bike/src/features/authentication/bloc/auth_bloc.dart';
-import 'package:cargo_bike/src/features/new_order/bloc/new_order_bloc.dart';
-import 'package:cargo_bike/src/repositories/add_order_repository.dart';
+import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
+import 'package:cargo_bike/src/repositories/delivery_repository.dart';
 import 'package:cargo_bike/src/repositories/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +8,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'features/authentication/auth_screen.dart';
 import 'features/home/home_screen.dart';
+import 'features/new_delivery/bloc/new_delivery_bloc.dart';
+import 'features/settings/bloc/settings_bloc.dart';
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_screen.dart';
 
@@ -39,19 +41,27 @@ class _MyAppState extends State<MyApp> {
             RepositoryProvider<AuthRepository>(
               create: (context) => AuthRepository(),
             ),
-            RepositoryProvider<AddOrderRepository>(
-              create: (context) => AddOrderRepository(),
+            RepositoryProvider<DeliveryRepository>(
+              create: (context) => DeliveryRepository(),
             ),
           ],
           child: MultiBlocProvider(
             providers: [
+              BlocProvider<SettingsBloc>(
+                  create: (context) =>
+                      SettingsBloc(repository: AuthRepository())
+                        ..add(GetUserInfoEvent())),
+              BlocProvider<MainListBloc>(
+                  create: (context) =>
+                      MainListBloc(repository: DeliveryRepository())
+                        ..add(GetAllOrders())),
               BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(repository: AuthRepository())
                   ..add(CheckUserStatusEvent()),
               ),
-              BlocProvider<NewOrderBloc>(
+              BlocProvider<NewDeliveryBloc>(
                 create: (context) =>
-                    NewOrderBloc(repository: AddOrderRepository()),
+                    NewDeliveryBloc(repository: DeliveryRepository()),
               ),
             ],
             child: AnimatedBuilder(
@@ -86,9 +96,10 @@ class _MyAppState extends State<MyApp> {
                     GlobalCupertinoLocalizations.delegate,
                   ],
                   supportedLocales: const [
-                    Locale('en', ''), // English, no country code
+                    Locale('en', ''),
+                    Locale('sr', ''),
                   ],
-
+                  locale: widget.settingsController.locale,
                   // Use AppLocalizations to configure the correct application title
                   // depending on the user's locale.
                   //

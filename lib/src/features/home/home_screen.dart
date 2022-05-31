@@ -4,6 +4,7 @@ import 'package:cargo_bike/src/features/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import '../settings/settings_controller.dart';
 import '../settings/settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -59,18 +60,18 @@ class _HomeScreenState extends State<HomeScreen> {
           showUnselectedLabels: false,
           unselectedItemColor: Colors.grey,
           iconSize: 25,
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              label: 'Home',
-              icon: Icon(Icons.home),
+              label: AppLocalizations.of(context)!.home,
+              icon: const Icon(Icons.home),
             ),
             BottomNavigationBarItem(
-              label: 'History',
-              icon: Icon(Icons.history),
+              label: AppLocalizations.of(context)!.history,
+              icon: const Icon(Icons.history),
             ),
             BottomNavigationBarItem(
-              label: 'Settings',
-              icon: Icon(Icons.settings),
+              label: AppLocalizations.of(context)!.settings,
+              icon: const Icon(Icons.settings),
             ),
           ],
         ),

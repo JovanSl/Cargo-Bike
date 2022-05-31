@@ -6,6 +6,12 @@ class Sender {
   final String phone;
   final String address;
 
+  factory Sender.fromMap(Map<String, dynamic> json) => Sender(
+      name: json['name'],
+      address: json['address'],
+      phone: json['phone'],
+      email: json['email']);
+
   Sender(
       {required this.name,
       required this.email,
