@@ -41,7 +41,7 @@ class CargoBikeInputField extends StatelessWidget {
             ),
           ],
         ),
-        child: TextField(
+        child: TextFormField(
           controller: controller,
           decoration: InputDecoration(
             hintText: hintText,

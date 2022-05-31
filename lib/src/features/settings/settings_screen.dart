@@ -28,6 +28,7 @@ class SettingsScreen extends StatelessWidget {
     final TextEditingController lastName = TextEditingController();
     final TextEditingController address = TextEditingController();
     final TextEditingController phone = TextEditingController();
+    bool visible = false;
     String imageUrl = '';
     File? image;
     return Scaffold(
@@ -63,15 +64,44 @@ class SettingsScreen extends StatelessWidget {
             }
           },
           builder: (context, state) {
+            if (state is ErrorState) {
+              return const Text('Error :D');
+            }
             if (state is UserLoadingState) {
               return const CargoBikeProgressIndicator();
-            } else if (state is UserLoadedState) {
-              firstName.text = state.user.firstName!;
-              address.text = state.user.address!;
-              lastName.text = state.user.lastName!;
-              phone.text = state.user.phone!;
-              imageUrl = state.user.imageUrl ?? '';
-              return Column(
+            } else if (state is UserLoadedState || state is UserButtonState) {
+              if (state is UserLoadedState) {
+                firstName.text = state.user.firstName!;
+                address.text = state.user.address!;
+                lastName.text = state.user.lastName!;
+                phone.text = state.user.phone!;
+                imageUrl = state.user.imageUrl ?? '';
+                visible = false;
+              }
+              if (state is UserButtonState) {
+                firstName.text = state.user.firstName!;
+                address.text = state.user.address!;
+                lastName.text = state.user.lastName!;
+                phone.text = state.user.phone!;
+                imageUrl = state.user.imageUrl ?? '';
+                visible = true;
+              }
+            }
+            return Form(
+              onChanged: () {
+                context.read<SettingsBloc>().add(
+                      CheckUserInputEvent(
+                          UserModel(
+                            firstName: firstName.text,
+                            lastName: lastName.text,
+                            address: address.text,
+                            phone: phone.text,
+                            imageUrl: imageUrl,
+                          ),
+                          image),
+                    );
+              },
+              child: Column(
                 children: [
                   const SizedBox(
                     height: 20,
@@ -80,13 +110,28 @@ class SettingsScreen extends StatelessWidget {
                     selectedImage: (value) {
                       image = value;
                     },
-                    onChange: () {},
+                    onChange: () {
+                      context.read<SettingsBloc>().add(
+                            CheckUserInputEvent(
+                                UserModel(
+                                  firstName: firstName.text,
+                                  lastName: lastName.text,
+                                  address: address.text,
+                                  phone: phone.text,
+                                  imageUrl: imageUrl,
+                                ),
+                                image),
+                          );
+                    },
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   CargoBikeInputField(
-                    controller: firstName,
+                    controller: firstName
+                      ..selection = TextSelection(
+                          baseOffset: firstName.text.length,
+                          extentOffset: firstName.text.length),
                     hintText: AppLocalizations.of(context)!.name,
                     hideText: false,
                   ),
@@ -94,7 +139,10 @@ class SettingsScreen extends StatelessWidget {
                     height: 15,
                   ),
                   CargoBikeInputField(
-                    controller: lastName,
+                    controller: lastName
+                      ..selection = TextSelection(
+                          baseOffset: lastName.text.length,
+                          extentOffset: lastName.text.length),
                     hintText: AppLocalizations.of(context)!.lastName,
                     hideText: false,
                   ),
@@ -102,7 +150,10 @@ class SettingsScreen extends StatelessWidget {
                     height: 15,
                   ),
                   CargoBikeInputField(
-                    controller: phone,
+                    controller: phone
+                      ..selection = TextSelection(
+                          baseOffset: phone.text.length,
+                          extentOffset: phone.text.length),
                     hintText: AppLocalizations.of(context)!.phoneNumber,
                     hideText: false,
                   ),
@@ -110,7 +161,10 @@ class SettingsScreen extends StatelessWidget {
                     height: 15,
                   ),
                   CargoBikeInputField(
-                    controller: address,
+                    controller: address
+                      ..selection = TextSelection(
+                          baseOffset: address.text.length,
+                          extentOffset: address.text.length),
                     hintText: AppLocalizations.of(context)!.receptionAddress,
                     hideText: false,
                   ),
@@ -121,29 +175,32 @@ class SettingsScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            context.read<SettingsBloc>().add(SubmitChangesEvent(
-                                UserModel(
-                                  firstName: firstName.text,
-                                  lastName: lastName.text,
-                                  address: address.text,
-                                  phone: phone.text,
-                                  imageUrl: imageUrl,
-                                ),
-                                image));
-                          },
-                          child: Text(AppLocalizations.of(context)!.submit)),
+                      Visibility(
+                        visible: visible,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              context
+                                  .read<SettingsBloc>()
+                                  .add(SubmitChangesEvent(
+                                      UserModel(
+                                        firstName: firstName.text,
+                                        lastName: lastName.text,
+                                        address: address.text,
+                                        phone: phone.text,
+                                        imageUrl: imageUrl,
+                                      ),
+                                      image));
+                            },
+                            child: Text(AppLocalizations.of(context)!.submit)),
+                      ),
                       const SizedBox(
                         width: 15,
                       ),
                     ],
                   )
                 ],
-              );
-            } else {
-              return const SizedBox();
-            }
+              ),
+            );
           },
         ),
       ),

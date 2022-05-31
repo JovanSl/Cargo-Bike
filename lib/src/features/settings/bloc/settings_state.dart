@@ -19,4 +19,10 @@ class UserLoadedState extends SettingsState {
   const UserLoadedState({required this.user});
 }
 
+class UserButtonState extends SettingsState {
+  final UserModel user;
+
+  const UserButtonState({required this.user});
+}
+
 class UserSavedSuccessState extends SettingsState {}

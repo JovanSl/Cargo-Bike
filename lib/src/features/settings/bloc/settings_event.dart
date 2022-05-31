@@ -17,3 +17,12 @@ class SubmitChangesEvent extends SettingsEvent {
 }
 
 class GetUserInfoEvent extends SettingsEvent {}
+
+class CheckUserInputEvent extends SettingsEvent {
+  final UserModel user;
+  final File? image;
+  const CheckUserInputEvent(this.user, this.image);
+
+  @override
+  List<Object> get props => [user, image ?? image!];
+}
