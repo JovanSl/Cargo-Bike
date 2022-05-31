@@ -15,7 +15,8 @@ class _DropDownState extends State<DropDown> {
   Map<String, String> lang = {'en': 'English', 'sr': 'Srpski'};
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(16),

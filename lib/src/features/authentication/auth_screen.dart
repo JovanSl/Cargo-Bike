@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'components/error_message.dart';
-import 'components/login_input_field.dart';
+import '../../components/cargo_bike_input_field.dart';
 
 class AuthScreen extends StatefulWidget {
   static const routeName = '/auth';
@@ -50,14 +50,14 @@ class _AuthScreenState extends State<AuthScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _emailController,
                       hintText: AppLocalizations.of(context)!.emailAddress,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _passwordController,
                       hintText: AppLocalizations.of(context)!.password,
                       hideText: true,
@@ -108,14 +108,14 @@ class _AuthScreenState extends State<AuthScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _emailController,
                       hintText: AppLocalizations.of(context)!.emailAddress,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _passwordController,
                       hintText: AppLocalizations.of(context)!.password,
                       hideText: true,
@@ -123,7 +123,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    LoginInputField(
+                    CargoBikeInputField(
                       controller: _passwordConfirmController,
                       hintText: AppLocalizations.of(context)!.confirmPassword,
                       hideText: true,

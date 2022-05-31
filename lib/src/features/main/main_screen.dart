@@ -35,7 +35,7 @@ class MainScreen extends StatelessWidget {
             }
             if (state is AllOrdersState) {
               return Padding(
-                padding: const EdgeInsets.only(top: 50),
+                padding: const EdgeInsets.only(top: 20),
                 child: ListView.builder(
                   itemCount: state.order.length,
                   itemBuilder: (BuildContext context, int index) =>

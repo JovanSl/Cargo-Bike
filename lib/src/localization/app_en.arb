@@ -29,5 +29,7 @@
   "confirmPassword":"Confirm Password",
   "backToLogIn":"Back to login form",
   "gallery":"Gallery",
-  "camera":"Camera"
+  "camera":"Camera",
+  "lastName":"Last Name",
+  "submit":"Submit"
 }

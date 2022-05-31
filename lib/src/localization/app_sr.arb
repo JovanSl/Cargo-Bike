@@ -28,5 +28,7 @@
   "confirmPassword":"Potvrdite lozinku",
   "backToLogIn":"Povratak na login",
   "gallery":"Galerija",
-  "camera":"Kamera"
+  "camera":"Kamera",
+  "lastName":"Prezime",
+  "submit":"Sačuvaj"
 }
