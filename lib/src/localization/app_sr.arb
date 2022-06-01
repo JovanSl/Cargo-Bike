@@ -30,5 +30,6 @@
   "gallery":"Galerija",
   "camera":"Kamera",
   "lastName":"Prezime",
-  "submit":"Sačuvaj"
+  "submit":"Sačuvaj",
+  "userInfoSaveSuccess":"Promene uspešno sačuvane!"
 }

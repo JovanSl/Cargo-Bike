@@ -58,14 +58,15 @@ class SettingsScreen extends StatelessWidget {
         child: BlocConsumer<SettingsBloc, SettingsState>(
           listener: (context, state) {
             if (state is UserSavedSuccessState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Successfuly saved user info')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.userInfoSaveSuccess)));
               context.read<SettingsBloc>().add(GetUserInfoEvent());
             }
           },
           builder: (context, state) {
             if (state is ErrorState) {
-              return const Text('Error :D');
+              return Text(AppLocalizations.of(context)!.error);
             }
             if (state is UserLoadingState) {
               return const CargoBikeProgressIndicator();

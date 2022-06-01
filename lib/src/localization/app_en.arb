@@ -31,5 +31,6 @@
   "gallery":"Gallery",
   "camera":"Camera",
   "lastName":"Last Name",
-  "submit":"Submit"
+  "submit":"Submit",
+  "userInfoSaveSuccess":"Successfuly saved user info!"
 }
