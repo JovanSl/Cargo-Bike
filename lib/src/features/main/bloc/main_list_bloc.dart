@@ -26,7 +26,9 @@ class MainListBloc extends Bloc<MainListEvent, MainListState> {
 
       for (var element in deliveries) {
         if (element.userId == userId) {
-          myDeliveries.add(element);
+          if (element.status == 'active') {
+            myDeliveries.add(element);
+          }
         }
       }
       if (myDeliveries.isEmpty) {

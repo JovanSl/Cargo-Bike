@@ -9,18 +9,22 @@ class Delivery {
   final Sender sender;
   final Recipient recipient;
   final Courier? courier;
+  final String status;
 
-  Delivery(
-      {this.courier,
-      required this.userId,
-      required this.sender,
-      required this.recipient});
+  Delivery({
+    required this.userId,
+    required this.sender,
+    required this.recipient,
+    this.courier,
+    required this.status,
+  });
 
   factory Delivery.fromMap(Map<String, dynamic> json) => Delivery(
         userId: json['userId'],
         sender: Sender.fromMap(json["sender"]),
         recipient: Recipient.fromMap(json["recipient"]),
         courier: Courier?.fromMap(json["courier"]),
+        status: json['status'],
       );
 
   factory Delivery.fromSnapshot(DocumentSnapshot snapshot) {
@@ -31,6 +35,7 @@ class Delivery {
       courier: snapshot["courier"] != null
           ? Courier?.fromMap(snapshot["courier"])
           : Courier(firstName: '', lastName: '', phone: '', email: ''),
+      status: snapshot['status'],
     );
   }
   factory Delivery.fromJson(Map<String, dynamic> json) {
@@ -39,6 +44,7 @@ class Delivery {
       sender: json['sender'],
       recipient: json['recipient'],
       courier: json['courier']!,
+      status: json['status'],
     );
   }
   Map<String, dynamic> toJson() {
@@ -47,6 +53,7 @@ class Delivery {
       'sender': sender.toJson(),
       'recipient': recipient.toJson(),
       'courier': courier?.toJson(),
+      'status': status,
     };
   }
 }

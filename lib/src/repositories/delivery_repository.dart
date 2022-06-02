@@ -10,8 +10,8 @@ class DeliveryRepository {
   final _user = FirebaseAuth.instance.currentUser!.uid;
 
   Future<void> addDelivery(Sender sender, Recipient recipient) {
-    final Delivery _delivery =
-        Delivery(userId: _user, sender: sender, recipient: recipient);
+    final Delivery _delivery = Delivery(
+        userId: _user, sender: sender, recipient: recipient, status: 'active');
     return _deliveries.add(_delivery.toJson());
   }
 
