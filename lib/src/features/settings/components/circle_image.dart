@@ -75,17 +75,12 @@ class _CircleImageState extends State<CircleImage> {
           BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
         if (state is UserLoadedState) {
           imageUrl = state.user.imageUrl ?? '';
-          // if (state is UserLoadedState) {
-          //   imageUrl = state.user.imageUrl ?? '';
-          // }
-          // if (state is StateWithButton) {
-          //   imageUrl = state.user.imageUrl ?? '';
-          // }
         }
         return SizedBox(
           width: 130,
           height: 130,
-          child: ClipOval(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(25),
             child: image != null
                 ? Image.file(
                     image!,

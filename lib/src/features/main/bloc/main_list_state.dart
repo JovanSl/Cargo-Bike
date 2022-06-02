@@ -9,16 +9,18 @@ abstract class MainListState extends Equatable {
 
 class MainListInitial extends MainListState {}
 
-class AllOrdersState extends MainListState {
-  final List<Delivery> order;
+class AllDeliveriesState extends MainListState {
+  final List<Delivery> delivery;
 
-  const AllOrdersState({required this.order});
+  const AllDeliveriesState({required this.delivery});
 }
 
-class AllOrdersErrorState extends MainListState {
+class AllDeliveriesErrorState extends MainListState {
   final String error;
 
-  const AllOrdersErrorState({required this.error});
+  const AllDeliveriesErrorState({required this.error});
 }
 
-class AllOrdersLoadingState extends MainListState {}
+class AllDeliveriesLoadingState extends MainListState {}
+
+class NoDeliveriesState extends MainListState {}

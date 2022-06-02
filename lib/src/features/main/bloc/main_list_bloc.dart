@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:cargo_bike/src/models/delivery.dart';
+import 'package:cargo_bike/src/repositories/auth_repository.dart';
 import 'package:cargo_bike/src/repositories/delivery_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -10,17 +11,33 @@ part 'main_list_state.dart';
 
 class MainListBloc extends Bloc<MainListEvent, MainListState> {
   final DeliveryRepository repository;
-  MainListBloc({required this.repository}) : super(MainListInitial()) {
-    on<GetAllOrders>(_getOrders);
+  final AuthRepository auth;
+  MainListBloc({required this.auth, required this.repository})
+      : super(MainListInitial()) {
+    on<GetAllDeliveries>(_getDeliveries);
   }
 
-  FutureOr<void> _getOrders(event, Emitter<MainListState> emit) async {
-    emit(AllOrdersLoadingState());
+  FutureOr<void> _getDeliveries(event, Emitter<MainListState> emit) async {
+    emit(AllDeliveriesLoadingState());
+    List<Delivery> myDeliveries = [];
+    var userId = await auth.getUserId();
     try {
-      List<Delivery> _orders = await repository.getDeliveries();
-      emit(AllOrdersState(order: _orders));
+      List<Delivery> deliveries = await repository.getDeliveries();
+
+      for (var element in deliveries) {
+        if (element.userId == userId) {
+          if (element.status == 'active') {
+            myDeliveries.add(element);
+          }
+        }
+      }
+      if (myDeliveries.isEmpty) {
+        emit(NoDeliveriesState());
+      } else {
+        emit(AllDeliveriesState(delivery: myDeliveries));
+      }
     } catch (e) {
-      emit(const AllOrdersErrorState(error: 'An Error occured'));
+      emit(const AllDeliveriesErrorState(error: 'An Error occured'));
     }
   }
 }

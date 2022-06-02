@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/delivery.dart';
+import '../models/delivery.dart';
 
 class DeliveryListTile extends StatelessWidget {
   final Delivery delivery;
@@ -34,10 +34,7 @@ class DeliveryListTile extends StatelessWidget {
                 flex: 2,
                 child: Column(
                   children: <Widget>[
-                    Text(delivery.sender.name),
                     Text(delivery.sender.address),
-                    Text(delivery.sender.phone),
-                    Text(delivery.sender.email),
                   ],
                 ),
               ),
@@ -54,10 +51,7 @@ class DeliveryListTile extends StatelessWidget {
                 flex: 2,
                 child: Column(
                   children: <Widget>[
-                    Text(delivery.recipient.name),
                     Text(delivery.recipient.address),
-                    Text(delivery.recipient.phone),
-                    Text(delivery.recipient.additionalInfo),
                   ],
                 ),
               ),

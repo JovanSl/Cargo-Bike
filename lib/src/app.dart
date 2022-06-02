@@ -1,4 +1,5 @@
 import 'package:cargo_bike/src/features/authentication/bloc/auth_bloc.dart';
+import 'package:cargo_bike/src/features/history/bloc/history_bloc.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
 import 'package:cargo_bike/src/repositories/delivery_repository.dart';
 import 'package:cargo_bike/src/repositories/auth_repository.dart';
@@ -51,10 +52,14 @@ class _MyAppState extends State<MyApp> {
                   create: (context) =>
                       SettingsBloc(repository: AuthRepository())
                         ..add(GetUserInfoEvent())),
+              BlocProvider<HistoryBloc>(
+                  create: (context) => HistoryBloc(
+                      auth: AuthRepository(),
+                      repository: DeliveryRepository())),
               BlocProvider<MainListBloc>(
-                  create: (context) =>
-                      MainListBloc(repository: DeliveryRepository())
-                        ..add(GetAllOrders())),
+                  create: (context) => MainListBloc(
+                      auth: AuthRepository(), repository: DeliveryRepository())
+                    ..add(GetAllDeliveries())),
               BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(repository: AuthRepository())
                   ..add(CheckUserStatusEvent()),
@@ -71,6 +76,9 @@ class _MyAppState extends State<MyApp> {
                   home: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is RegisterSuccessState) {
+                        context.read<SettingsBloc>().add(GetUserInfoEvent());
+                        context.read<MainListBloc>().add(GetAllDeliveries());
+                        context.read<HistoryBloc>().add(GetHistoryEvent());
                         return HomeScreen(
                             settingsController: widget.settingsController);
                       } else if (state is UnauthenticatedState) {

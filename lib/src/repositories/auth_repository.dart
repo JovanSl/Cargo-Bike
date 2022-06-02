@@ -30,6 +30,10 @@ class AuthRepository {
     await auth.signOut();
   }
 
+  Future<String> getUserId() async {
+    return FirebaseAuth.instance.currentUser!.uid;
+  }
+
   Future<bool> isSignedIn() async {
     User? currentUser = auth.currentUser;
     currentUser ??= await FirebaseAuth.instance.authStateChanges().first;

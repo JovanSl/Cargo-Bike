@@ -15,7 +15,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../authentication/bloc/auth_bloc.dart';
 import 'settings_controller.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key, required this.controller}) : super(key: key);
 
   static const routeName = '/settings';
@@ -23,14 +23,29 @@ class SettingsScreen extends StatelessWidget {
   final SettingsController controller;
 
   @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  final TextEditingController firstName = TextEditingController();
+  final TextEditingController lastName = TextEditingController();
+  final TextEditingController address = TextEditingController();
+  final TextEditingController phone = TextEditingController();
+  bool visible = false;
+  String imageUrl = '';
+  File? image;
+
+  @override
+  void dispose() {
+    firstName.dispose();
+    lastName.dispose();
+    address.dispose();
+    phone.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController firstName = TextEditingController();
-    final TextEditingController lastName = TextEditingController();
-    final TextEditingController address = TextEditingController();
-    final TextEditingController phone = TextEditingController();
-    bool visible = false;
-    String imageUrl = '';
-    File? image;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -58,14 +73,15 @@ class SettingsScreen extends StatelessWidget {
         child: BlocConsumer<SettingsBloc, SettingsState>(
           listener: (context, state) {
             if (state is UserSavedSuccessState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Successfuly saved user info')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.userInfoSaveSuccess)));
               context.read<SettingsBloc>().add(GetUserInfoEvent());
             }
           },
           builder: (context, state) {
             if (state is ErrorState) {
-              return const Text('Error :D');
+              return Text(AppLocalizations.of(context)!.error);
             }
             if (state is UserLoadingState) {
               return const CargoBikeProgressIndicator();
@@ -171,7 +187,7 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  DropDown(controller: controller),
+                  DropDown(controller: widget.controller),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
