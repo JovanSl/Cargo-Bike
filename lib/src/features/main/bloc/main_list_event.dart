@@ -7,4 +7,4 @@ abstract class MainListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetAllOrders extends MainListEvent {}
+class GetAllDeliveries extends MainListEvent {}

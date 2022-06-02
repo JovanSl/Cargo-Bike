@@ -52,9 +52,9 @@ class _MyAppState extends State<MyApp> {
                       SettingsBloc(repository: AuthRepository())
                         ..add(GetUserInfoEvent())),
               BlocProvider<MainListBloc>(
-                  create: (context) =>
-                      MainListBloc(repository: DeliveryRepository())
-                        ..add(GetAllOrders())),
+                  create: (context) => MainListBloc(
+                      auth: AuthRepository(), repository: DeliveryRepository())
+                    ..add(GetAllDeliveries())),
               BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(repository: AuthRepository())
                   ..add(CheckUserStatusEvent()),
@@ -71,6 +71,8 @@ class _MyAppState extends State<MyApp> {
                   home: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is RegisterSuccessState) {
+                        context.read<SettingsBloc>().add(GetUserInfoEvent());
+                        context.read<MainListBloc>().add(GetAllDeliveries());
                         return HomeScreen(
                             settingsController: widget.settingsController);
                       } else if (state is UnauthenticatedState) {

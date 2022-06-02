@@ -6,7 +6,7 @@ import '../models/recipient.dart';
 import '../models/sender.dart';
 
 class DeliveryRepository {
-  final _deliveries = FirebaseFirestore.instance.collection('orders');
+  final _deliveries = FirebaseFirestore.instance.collection('deliveries');
   final _user = FirebaseAuth.instance.currentUser!.uid;
 
   Future<void> addDelivery(Sender sender, Recipient recipient) {
@@ -17,6 +17,10 @@ class DeliveryRepository {
 
   Future<List<Delivery>> getDeliveries() async {
     var result = await _deliveries.get();
-    return result.docs.map((e) => Delivery.fromSnapshot(e)).toList();
+    try {
+      return result.docs.map((e) => Delivery.fromSnapshot(e)).toList();
+    } catch (e) {
+      rethrow;
+    }
   }
 }

@@ -32,5 +32,6 @@
   "camera":"Camera",
   "lastName":"Last Name",
   "submit":"Submit",
-  "userInfoSaveSuccess":"Successfuly saved user info!"
+  "userInfoSaveSuccess":"Successfuly saved user info!",
+  "noDeliveries":"No deliveries"
 }

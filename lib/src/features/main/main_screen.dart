@@ -1,13 +1,15 @@
 import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
 import 'package:cargo_bike/src/features/new_delivery/new_order_screen.dart';
+import 'package:cargo_bike/src/features/settings/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../components/progress_indicator.dart';
 import '../new_delivery/bloc/new_delivery_bloc.dart';
-import 'components/order_list_tile.dart';
+import 'components/delivery_list_tile.dart';
+import 'components/empty_delivery_list.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -25,21 +27,27 @@ class MainScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(AppLocalizations.of(context)!
                     .successfullyCreatedDelivery)));
-            context.read<MainListBloc>().add(GetAllOrders());
+            context.read<MainListBloc>().add(GetAllDeliveries());
+          }
+          if (state is UserLoadedState) {
+            context.read<MainListBloc>().add(GetAllDeliveries());
           }
         },
         child: BlocBuilder<MainListBloc, MainListState>(
           builder: ((context, state) {
-            if (state is AllOrdersLoadingState) {
+            if (state is AllDeliveriesLoadingState) {
               return const CargoBikeProgressIndicator();
             }
-            if (state is AllOrdersState) {
+            if (state is NoDeliveriesState) {
+              return const EmptyDeliveryList();
+            }
+            if (state is AllDeliveriesState) {
               return Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: ListView.builder(
-                  itemCount: state.order.length,
+                  itemCount: state.delivery.length,
                   itemBuilder: (BuildContext context, int index) =>
-                      DeliveryListTile(delivery: state.order[index]),
+                      DeliveryListTile(delivery: state.delivery[index]),
                 ),
               );
             } else {

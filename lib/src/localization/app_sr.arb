@@ -31,5 +31,6 @@
   "camera":"Kamera",
   "lastName":"Prezime",
   "submit":"Sačuvaj",
-  "userInfoSaveSuccess":"Promene uspešno sačuvane!"
+  "userInfoSaveSuccess":"Promene uspešno sačuvane!",
+  "noDeliveries":"Trenutno nemate ni jednu isporuku"
 }

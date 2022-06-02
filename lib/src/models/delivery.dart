@@ -20,7 +20,7 @@ class Delivery {
         userId: json['userId'],
         sender: Sender.fromMap(json["sender"]),
         recipient: Recipient.fromMap(json["recipient"]),
-        courier: Courier.fromMap(json["courier"]),
+        courier: Courier?.fromMap(json["courier"]),
       );
 
   factory Delivery.fromSnapshot(DocumentSnapshot snapshot) {
@@ -28,7 +28,9 @@ class Delivery {
       userId: snapshot['userId'],
       sender: Sender.fromMap(snapshot["sender"]),
       recipient: Recipient.fromMap(snapshot["recipient"]),
-      courier: Courier.fromMap(snapshot["courier"]),
+      courier: snapshot["courier"] != null
+          ? Courier?.fromMap(snapshot["courier"])
+          : Courier(firstName: '', lastName: '', phone: '', email: ''),
     );
   }
   factory Delivery.fromJson(Map<String, dynamic> json) {
@@ -36,7 +38,7 @@ class Delivery {
       userId: json['userId'],
       sender: json['sender'],
       recipient: json['recipient'],
-      courier: json['courier'],
+      courier: json['courier']!,
     );
   }
   Map<String, dynamic> toJson() {

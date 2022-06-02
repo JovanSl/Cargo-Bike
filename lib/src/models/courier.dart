@@ -3,10 +3,10 @@ import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Courier {
-  final String firstName;
-  final String lastName;
-  final String phone;
-  final String email;
+  final String? firstName;
+  final String? lastName;
+  final String? phone;
+  final String? email;
 
   Courier(
       {required this.firstName,
