@@ -36,15 +36,28 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   FutureOr<void> _getUserInfo(event, Emitter<SettingsState> emit) async {
     emit(UserLoadingState());
+    UserModel? user;
     try {
-      UserModel user = await repository.getUserInfo();
+      user = await repository.getUserInfo();
       userFName = user.firstName;
       userLName = user.lastName;
       userAddress = user.address;
       userPhone = user.phone;
       imageUrl = user.imageUrl;
-      emit(UserLoadedState(user: user));
     } catch (e) {
+      user = null;
+    }
+    if (user != null) {
+      emit(UserLoadedState(user: user));
+    } else if (user == null) {
+      emit(UserLoadedState(
+          user: UserModel(
+              address: '',
+              firstName: '',
+              lastName: '',
+              phone: '',
+              imageUrl: '')));
+    } else {
       emit(ErrorState());
     }
   }
