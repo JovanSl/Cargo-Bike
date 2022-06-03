@@ -1,4 +1,5 @@
 import 'package:cargo_bike/src/constants/colors.dart';
+import 'package:cargo_bike/src/features/delivery_details/delivery_details_screen.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
 import 'package:cargo_bike/src/features/new_delivery/new_order_screen.dart';
 import 'package:cargo_bike/src/features/settings/bloc/settings_bloc.dart';
@@ -55,7 +56,17 @@ class _MainScreenState extends State<MainScreen> {
                   child: ListView.builder(
                     itemCount: state.delivery.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        DeliveryListTile(delivery: state.delivery[index]),
+                        GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DeliveryDetailsScreen(),
+                          ),
+                        );
+                      },
+                      child: DeliveryListTile(delivery: state.delivery[index]),
+                    ),
                   ),
                 ),
               );

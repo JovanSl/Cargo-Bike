@@ -20,6 +20,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
 
   FutureOr<void> _getHistory(
       GetHistoryEvent event, Emitter<HistoryState> emit) async {
+    emit(AllHistoryLoadingState());
     List<Delivery> myHistory = [];
     var userId = await auth.getUserId();
     try {
