@@ -53,9 +53,8 @@ class _MyAppState extends State<MyApp> {
                       SettingsBloc(repository: AuthRepository())
                         ..add(GetUserInfoEvent())),
               BlocProvider<HistoryBloc>(
-                  create: (context) => HistoryBloc(
-                      auth: AuthRepository(),
-                      repository: DeliveryRepository())),
+                  create: (context) =>
+                      HistoryBloc(repository: DeliveryRepository())),
               BlocProvider<MainListBloc>(
                   create: (context) => MainListBloc(
                       auth: AuthRepository(), repository: DeliveryRepository())

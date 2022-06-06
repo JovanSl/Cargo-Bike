@@ -23,7 +23,6 @@ class MainListBloc extends Bloc<MainListEvent, MainListState> {
     var userId = await auth.getUserId();
     try {
       List<Delivery> deliveries = await repository.getDeliveries();
-
       for (var element in deliveries) {
         if (element.userId == userId) {
           if (element.status == 'active') {
