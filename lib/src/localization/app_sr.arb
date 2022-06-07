@@ -32,5 +32,8 @@
   "lastName":"Prezime",
   "submit":"Sačuvaj",
   "userInfoSaveSuccess":"Promene uspešno sačuvane!",
-  "noDeliveries":"Trenutno nemate ni jednu isporuku"
+  "noDeliveries":"Trenutno nemate ni jednu isporuku",
+  "from":"Od",
+  "to":"Do",
+  "details":"Detalji"
 }

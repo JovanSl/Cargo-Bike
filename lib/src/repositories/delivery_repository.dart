@@ -21,10 +21,14 @@ class DeliveryRepository {
         .toJson());
   }
 
-  Future<List<Delivery>> getDeliveries() async {
+  Future<List<Delivery>> getActiveDeliveries() async {
     var result = await _deliveries.get();
     try {
-      allDeliveries = result.docs.map((e) => Delivery.fromSnapshot(e)).toList();
+      allDeliveries = result.docs
+          .map((e) => Delivery.fromSnapshot(e))
+          .where((element) =>
+              element.status == 'active' && element.userId == _user)
+          .toList();
       return allDeliveries;
     } catch (e) {
       rethrow;

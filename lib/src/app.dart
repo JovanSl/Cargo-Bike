@@ -56,9 +56,9 @@ class _MyAppState extends State<MyApp> {
                   create: (context) =>
                       HistoryBloc(repository: DeliveryRepository())),
               BlocProvider<MainListBloc>(
-                  create: (context) => MainListBloc(
-                      auth: AuthRepository(), repository: DeliveryRepository())
-                    ..add(GetAllDeliveries())),
+                  create: (context) =>
+                      MainListBloc(repository: DeliveryRepository())
+                        ..add(GetAllDeliveries())),
               BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(repository: AuthRepository())
                   ..add(CheckUserStatusEvent()),

@@ -33,5 +33,8 @@
   "lastName":"Last Name",
   "submit":"Submit",
   "userInfoSaveSuccess":"Successfuly saved user info!",
-  "noDeliveries":"No deliveries"
+  "noDeliveries":"No deliveries",
+  "from":"From",
+  "to":"To",
+  "details":"Details"
 }
