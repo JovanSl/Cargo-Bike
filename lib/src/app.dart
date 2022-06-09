@@ -1,4 +1,5 @@
 import 'package:cargo_bike/src/features/authentication/bloc/auth_bloc.dart';
+import 'package:cargo_bike/src/features/delivery_details/bloc/details_bloc.dart';
 import 'package:cargo_bike/src/features/history/bloc/history_bloc.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
 import 'package:cargo_bike/src/repositories/delivery_repository.dart';
@@ -14,7 +15,6 @@ import 'features/settings/bloc/settings_bloc.dart';
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_screen.dart';
 
-/// The Widget that configures your application.
 class MyApp extends StatefulWidget {
   const MyApp({
     Key? key,
@@ -48,18 +48,18 @@ class _MyAppState extends State<MyApp> {
           ],
           child: MultiBlocProvider(
             providers: [
+              BlocProvider<DetailsBloc>(create: (context) => DetailsBloc()),
               BlocProvider<SettingsBloc>(
                   create: (context) =>
                       SettingsBloc(repository: AuthRepository())
                         ..add(GetUserInfoEvent())),
               BlocProvider<HistoryBloc>(
-                  create: (context) => HistoryBloc(
-                      auth: AuthRepository(),
-                      repository: DeliveryRepository())),
+                  create: (context) =>
+                      HistoryBloc(repository: DeliveryRepository())),
               BlocProvider<MainListBloc>(
-                  create: (context) => MainListBloc(
-                      auth: AuthRepository(), repository: DeliveryRepository())
-                    ..add(GetAllDeliveries())),
+                  create: (context) =>
+                      MainListBloc(repository: DeliveryRepository())
+                        ..add(GetAllDeliveries())),
               BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(repository: AuthRepository())
                   ..add(CheckUserStatusEvent()),

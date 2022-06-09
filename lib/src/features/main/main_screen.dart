@@ -1,4 +1,5 @@
 import 'package:cargo_bike/src/constants/colors.dart';
+import 'package:cargo_bike/src/features/delivery_details/delivery_details_screen.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
 import 'package:cargo_bike/src/features/new_delivery/new_order_screen.dart';
 import 'package:cargo_bike/src/features/settings/bloc/settings_bloc.dart';
@@ -11,9 +12,14 @@ import '../new_delivery/bloc/new_delivery_bloc.dart';
 import '../../components/delivery_list_tile.dart';
 import 'components/empty_delivery_list.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,15 +45,30 @@ class MainScreen extends StatelessWidget {
               return const CargoBikeProgressIndicator();
             }
             if (state is NoDeliveriesState) {
-              return const EmptyDeliveryList();
+              return GestureDetector(
+                  onTap: _getData, child: const EmptyDeliveryList());
             }
             if (state is AllDeliveriesState) {
               return Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: ListView.builder(
-                  itemCount: state.delivery.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      DeliveryListTile(delivery: state.delivery[index]),
+                child: RefreshIndicator(
+                  onRefresh: _getData,
+                  child: ListView.builder(
+                    itemCount: state.delivery.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DeliveryDetailsScreen(
+                                delivery: state.delivery[index]),
+                          ),
+                        );
+                      },
+                      child: DeliveryListTile(delivery: state.delivery[index]),
+                    ),
+                  ),
                 ),
               );
             } else {
@@ -70,5 +91,9 @@ class MainScreen extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> _getData() async {
+    context.read<MainListBloc>().add(GetAllDeliveries());
   }
 }

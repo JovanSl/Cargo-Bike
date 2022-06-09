@@ -7,21 +7,24 @@ class EmptyDeliveryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
+      child: SingleChildScrollView(
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const Icon(
-          Icons.directions_bike,
-          size: 100,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Icon(
+              Icons.directions_bike,
+              size: 100,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              AppLocalizations.of(context)!.noDeliveries,
+              style: const TextStyle(fontSize: 20),
+            )
+          ],
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        Text(
-          AppLocalizations.of(context)!.noDeliveries,
-          style: const TextStyle(fontSize: 20),
-        )
-      ],
-    ));
+      ),
+    );
   }
 }
