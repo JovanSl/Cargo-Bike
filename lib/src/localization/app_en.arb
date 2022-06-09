@@ -36,5 +36,6 @@
   "noDeliveries":"No deliveries",
   "from":"From",
   "to":"To",
-  "details":"Details"
+  "details":"Details",
+  "cantDisplayMap":"Can't display map for provided location"
 }
