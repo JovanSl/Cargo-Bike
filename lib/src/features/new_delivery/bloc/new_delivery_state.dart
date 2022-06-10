@@ -19,3 +19,5 @@ class StateWithButton extends NewDeliveryState {
 }
 
 class AddDeliveryError extends NewDeliveryState {}
+
+class BadAddressState extends NewDeliveryState {}

@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cargo_bike/src/repositories/delivery_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geocoding/geocoding.dart';
 
 import '../../../models/recipient.dart';
 import '../../../models/sender.dart';
+import '../../../models/location.dart' as loc;
 
 part 'new_delivery_event.dart';
 part 'new_delivery_state.dart';
@@ -20,13 +22,39 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
 
   FutureOr<void> _addDelivery(
       AddDeliveryEvent event, Emitter<NewDeliveryState> emit) async {
-    final Sender _sender = event.sender;
-    final Recipient _recipient = event.recipient;
+    List<Location> locations = [];
     try {
-      await repository.addDelivery(_sender, _recipient);
-      emit(AddDeliverySuccess());
-    } on Exception {
-      emit(AddDeliveryError());
+      locations =
+          await getLocations(event.sender.address, event.recipient.address);
+    } catch (e) {
+      emit(BadAddressState());
+    }
+    if (locations.isNotEmpty) {
+      try {
+        await repository.addDelivery(
+            Sender(
+              name: event.sender.name,
+              email: event.sender.email,
+              phone: event.sender.phone,
+              address: event.sender.address,
+              location: loc.Location(
+                  lat: locations.first.latitude,
+                  lng: locations.first.longitude),
+            ),
+            Recipient(
+              name: event.recipient.name,
+              additionalInfo: event.recipient.additionalInfo,
+              phone: event.recipient.phone,
+              address: event.recipient.address,
+              location: loc.Location(
+                  lat: locations.last.latitude, lng: locations.last.longitude),
+            ));
+        emit(AddDeliverySuccess());
+      } on Exception {
+        emit(AddDeliveryError());
+      }
+    } else {
+      emit(BadAddressState());
     }
   }
 
@@ -58,5 +86,12 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
   FutureOr<void> _setInitial(
       SetDeliveryToInitial event, Emitter<NewDeliveryState> emit) {
     emit(NewDeliveryInitial());
+  }
+
+  Future getLocations(location1, location2) async {
+    List<Location> x = [];
+    x.addAll(await locationFromAddress(location1));
+    x.addAll(await locationFromAddress(location2));
+    return x;
   }
 }

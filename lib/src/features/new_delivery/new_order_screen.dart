@@ -72,6 +72,12 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(AppLocalizations.of(context)!.error)));
             }
+            if (state is BadAddressState) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(
+                      "Address format should be like: Street, Street number, city")));
+              context.read<NewDeliveryBloc>().add(SetDeliveryToInitial());
+            }
           },
           builder: (context, state) {
             if (state is NewDeliveryInitial || state is StateWithButton) {

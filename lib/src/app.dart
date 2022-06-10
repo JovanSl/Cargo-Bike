@@ -1,5 +1,4 @@
 import 'package:cargo_bike/src/features/authentication/bloc/auth_bloc.dart';
-import 'package:cargo_bike/src/features/delivery_details/bloc/details_bloc.dart';
 import 'package:cargo_bike/src/features/history/bloc/history_bloc.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
 import 'package:cargo_bike/src/repositories/delivery_repository.dart';
@@ -48,7 +47,6 @@ class _MyAppState extends State<MyApp> {
           ],
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<DetailsBloc>(create: (context) => DetailsBloc()),
               BlocProvider<SettingsBloc>(
                   create: (context) =>
                       SettingsBloc(repository: AuthRepository())
@@ -73,6 +71,7 @@ class _MyAppState extends State<MyApp> {
               animation: widget.settingsController,
               builder: (BuildContext context, Widget? child) {
                 return MaterialApp(
+                  debugShowCheckedModeBanner: false,
                   home: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is RegisterSuccessState) {
