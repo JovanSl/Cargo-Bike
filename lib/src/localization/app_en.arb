@@ -37,5 +37,6 @@
   "from":"From",
   "to":"To",
   "details":"Details",
-  "cantDisplayMap":"Can't display map for provided location"
+  "cantDisplayMap":"Can't display map for provided location",
+  "errorLocationFormat":"Address format should be like: Street, Street number, city"
 }

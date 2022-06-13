@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../components/empty_delivery_list.dart';
 import '../../components/progress_indicator.dart';
 import '../new_delivery/bloc/new_delivery_bloc.dart';
 import '../../components/delivery_list_tile.dart';
-import 'components/empty_delivery_list.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);

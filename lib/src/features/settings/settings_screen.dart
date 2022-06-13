@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:cargo_bike/src/components/input_field_component.dart';
 import 'package:cargo_bike/src/components/progress_indicator.dart';
 import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:cargo_bike/src/constants/styles.dart';
-import 'package:cargo_bike/src/components/cargo_bike_input_field.dart';
 import 'package:cargo_bike/src/features/settings/bloc/settings_bloc.dart';
 import 'package:cargo_bike/src/features/settings/components/circle_image.dart';
 import 'package:cargo_bike/src/features/settings/components/drop_down.dart';
@@ -17,9 +17,7 @@ import 'settings_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key, required this.controller}) : super(key: key);
-
   static const routeName = '/settings';
-
   final SettingsController controller;
 
   @override
@@ -120,7 +118,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 children: [
                   const SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   CircleImage(
                     selectedImage: (value) {
@@ -141,52 +139,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
-                  CargoBikeInputField(
-                    controller: firstName
-                      ..selection = TextSelection(
-                          baseOffset: firstName.text.length,
-                          extentOffset: firstName.text.length),
-                    hintText: AppLocalizations.of(context)!.name,
-                    hideText: false,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  CargoBikeInputField(
-                    controller: lastName
-                      ..selection = TextSelection(
-                          baseOffset: lastName.text.length,
-                          extentOffset: lastName.text.length),
-                    hintText: AppLocalizations.of(context)!.lastName,
-                    hideText: false,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  CargoBikeInputField(
-                    controller: phone
-                      ..selection = TextSelection(
-                          baseOffset: phone.text.length,
-                          extentOffset: phone.text.length),
-                    hintText: AppLocalizations.of(context)!.phoneNumber,
-                    hideText: false,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  CargoBikeInputField(
-                    controller: address
-                      ..selection = TextSelection(
-                          baseOffset: address.text.length,
-                          extentOffset: address.text.length),
-                    hintText: AppLocalizations.of(context)!.receptionAddress,
-                    hideText: false,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  InputFieldComponent(
+                      controller: firstName,
+                      lable: AppLocalizations.of(context)!.name),
+                  InputFieldComponent(
+                      controller: lastName,
+                      lable: AppLocalizations.of(context)!.lastName),
+                  InputFieldComponent(
+                      controller: phone,
+                      lable: AppLocalizations.of(context)!.phoneNumber),
+                  InputFieldComponent(
+                      controller: address,
+                      lable: AppLocalizations.of(context)!.receptionAddress),
                   DropDown(controller: widget.controller),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -194,6 +160,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Visibility(
                         visible: visible,
                         child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(100, 35),
+                              primary: Colors.lightGreen,
+                            ),
                             onPressed: () {
                               context
                                   .read<SettingsBloc>()

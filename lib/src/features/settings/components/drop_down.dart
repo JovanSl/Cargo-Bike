@@ -19,7 +19,7 @@ class _DropDownState extends State<DropDown> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(10),
           child: DropdownButton<ThemeMode>(
             value: widget.controller.themeMode,
             onChanged: widget.controller.updateThemeMode,
@@ -40,7 +40,7 @@ class _DropDownState extends State<DropDown> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(10),
           child: DropdownButton<String>(
             iconSize: 30,
             hint: SizedBox(

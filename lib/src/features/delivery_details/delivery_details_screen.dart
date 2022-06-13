@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
+import 'components/delivery_text_field.dart';
+
 class DeliveryDetailsScreen extends StatefulWidget {
   static const routeName = '/details-screen';
   final Delivery delivery;
@@ -38,18 +40,25 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
         title: Text(AppLocalizations.of(context)!.details),
         backgroundColor: CargoBikeColors.lightGreen,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              constraints: const BoxConstraints(minWidth: 300, maxHeight: 300),
-              child: OSFMap(
-                mapController: mapController,
-                locationFirst: widget.delivery.sender.location,
-                locationLast: widget.delivery.recipient.location,
-              ),
+      body: Column(
+        children: [
+          Container(
+            constraints: BoxConstraints(
+              minWidth: 300,
+              maxHeight: MediaQuery.of(context).size.height * 0.35,
             ),
-            Row(
+            child: OSFMap(
+              mapController: mapController,
+              locationFirst: widget.delivery.sender.location,
+              locationLast: widget.delivery.recipient.location,
+            ),
+          ),
+          Container(
+            constraints: BoxConstraints(
+              minWidth: 300,
+              maxHeight: MediaQuery.of(context).size.height * 0.65,
+            ),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SingleChildScrollView(
@@ -80,24 +89,18 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                                 child: Text(
                                     AppLocalizations.of(context)!.from + ":"),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                              DeliveryTextField(
                                 child: Text(AppLocalizations.of(context)!.name +
                                     ':' +
                                     widget.delivery.sender.name),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                              DeliveryTextField(
                                 child: Text(
                                     AppLocalizations.of(context)!.phoneNumber +
                                         ':' +
                                         widget.delivery.sender.phone),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                              DeliveryTextField(
                                 child: Text(
                                     AppLocalizations.of(context)!.email +
                                         ':' +
@@ -107,15 +110,12 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
                       const Icon(
                         Icons.arrow_downward,
                         size: 30,
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                         child: Container(
                           constraints: const BoxConstraints(
                               minWidth: 300, maxWidth: 300),
@@ -135,24 +135,18 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                                 child: Text(
                                     AppLocalizations.of(context)!.to + ":"),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                              DeliveryTextField(
                                 child: Text(AppLocalizations.of(context)!.name +
                                     ':' +
                                     widget.delivery.recipient.name),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                              DeliveryTextField(
                                 child: Text(
                                     AppLocalizations.of(context)!.phoneNumber +
                                         ':' +
                                         widget.delivery.recipient.phone),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                              DeliveryTextField(
                                 child: Text(AppLocalizations.of(context)!
                                         .additionalInfo +
                                     ':' +
@@ -166,9 +160,9 @@ class _DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
                   ),
                 ),
               ],
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

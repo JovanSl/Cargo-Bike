@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../components/delivery_list_tile.dart';
 import '../../components/progress_indicator.dart';
-import '../main/components/empty_delivery_list.dart';
+import '../../components/empty_delivery_list.dart';
 
 class HistoryScreen extends StatefulWidget {
   static const routeName = '/history';

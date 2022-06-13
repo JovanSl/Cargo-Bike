@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../components/input_field_component.dart';
 import 'bloc/new_delivery_bloc.dart';
 
 class NewOrderScreen extends StatefulWidget {
@@ -73,9 +74,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   SnackBar(content: Text(AppLocalizations.of(context)!.error)));
             }
             if (state is BadAddressState) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text(
-                      "Address format should be like: Street, Street number, city")));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.errorLocationFormat)));
               context.read<NewDeliveryBloc>().add(SetDeliveryToInitial());
             }
           },
@@ -208,44 +209,5 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     _recipientPhone.dispose();
     _additionalInfo.dispose();
     super.dispose();
-  }
-}
-
-class InputFieldComponent extends StatelessWidget {
-  final TextEditingController controller;
-  final String lable;
-  const InputFieldComponent({
-    Key? key,
-    required this.controller,
-    required this.lable,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 40,
-      ),
-      child: TextFormField(
-        controller: controller,
-        cursorColor: Colors.lightGreen,
-        textAlignVertical: TextAlignVertical.center,
-        decoration: InputDecoration(
-          isCollapsed: true,
-          contentPadding: const EdgeInsets.only(left: 30, top: 24, bottom: 16),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.lightGreen.withOpacity(0.4)),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.lightGreen),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          labelText: lable,
-          labelStyle: const TextStyle(color: Colors.black),
-        ),
-      ),
-    );
   }
 }
