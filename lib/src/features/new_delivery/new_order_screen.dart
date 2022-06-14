@@ -160,6 +160,13 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                       )
                     ]),
                   ),
+                  ElevatedButton(
+                      onPressed: () {
+                        context.read<NewDeliveryBloc>().add(
+                            const SuggestAddress(
+                                address: 'Devet jugovica novi sad'));
+                      },
+                      child: const Text("DUGME")),
                   Padding(
                     padding: const EdgeInsets.all(40.0),
                     child: ElevatedButton(

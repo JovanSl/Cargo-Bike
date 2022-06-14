@@ -18,6 +18,7 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
     on<AddDeliveryEvent>(_addDelivery);
     on<CheckUserInputEvent>(_checkInput);
     on<SetDeliveryToInitial>(_setInitial);
+    on<SuggestAddress>(_suggestAddress);
   }
 
   FutureOr<void> _addDelivery(
@@ -93,5 +94,11 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
     x.addAll(await locationFromAddress(location1));
     x.addAll(await locationFromAddress(location2));
     return x;
+  }
+
+  FutureOr<void> _suggestAddress(
+      SuggestAddress event, Emitter<NewDeliveryState> emit) async {
+    var result = await repository.suggestionProcess(event.address);
+    //print("rezultat" + result.body.toString());
   }
 }

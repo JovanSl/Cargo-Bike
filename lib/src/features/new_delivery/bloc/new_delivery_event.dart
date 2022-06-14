@@ -22,3 +22,9 @@ class CheckUserInputEvent extends NewDeliveryEvent {
 
   const CheckUserInputEvent({required this.sender, required this.recipient});
 }
+
+class SuggestAddress extends NewDeliveryEvent {
+  final String address;
+
+  const SuggestAddress({required this.address});
+}

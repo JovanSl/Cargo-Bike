@@ -17,28 +17,41 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late List<Widget> screens;
   int pageIndex = 0;
+  late PageController pageController;
 
   @override
   void initState() {
-    screens = [
-      const MainScreen(),
-      const HistoryScreen(),
-      SettingsScreen(
-        controller: widget.settingsController,
-      ),
-    ];
+    pageController = PageController();
     super.initState();
+  }
+
+  onPageChanged(int pageIndex) {
+    setState(() {
+      this.pageIndex = pageIndex;
+    });
+  }
+
+  onTap(int pageIndex) {
+    pageController.animateToPage(pageIndex,
+        curve: Curves.fastLinearToSlowEaseIn,
+        duration: const Duration(milliseconds: 400));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: IndexedStack(
-        index: pageIndex,
-        children: screens,
+      body: PageView(
+        children: <Widget>[
+          const MainScreen(),
+          const HistoryScreen(),
+          SettingsScreen(
+            controller: widget.settingsController,
+          ),
+        ],
+        controller: pageController,
+        onPageChanged: onPageChanged,
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -53,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: BottomNavigationBar(
           currentIndex: pageIndex,
-          onTap: (index) => setState(() => pageIndex = index),
+          onTap: onTap,
           backgroundColor: Colors.white,
           selectedItemColor: CargoBikeColors.lightGreen,
           showSelectedLabels: false,
