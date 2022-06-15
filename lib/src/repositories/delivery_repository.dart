@@ -56,15 +56,15 @@ class DeliveryRepository {
   }
 
   Future suggestionProcess(String address) async {
-    List<Suggested> test = [];
+    List<Suggested> suggestedLocations = [];
     final response = await http.get(
-      Uri.parse(AddressApi.searchEndpoint + address),
+      Uri.parse(AddressApi.searchEndpoint + address + "&limit=3"),
     );
-
     if (response.statusCode == 200) {
       final extractedData = json.decode(response.body)['features'] as List;
-      test = extractedData.map((e) => Suggested.fromJson(e)).toList();
-      return extractedData;
+      suggestedLocations =
+          extractedData.map((e) => Suggested.fromJson(e)).toList();
+      return suggestedLocations;
     } else {
       throw ApiException("Api Error");
     }

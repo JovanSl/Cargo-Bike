@@ -21,3 +21,9 @@ class StateWithButton extends NewDeliveryState {
 class AddDeliveryError extends NewDeliveryState {}
 
 class BadAddressState extends NewDeliveryState {}
+
+class SuggestAddressState extends NewDeliveryState {
+  final List<Properties?> suggestion;
+
+  const SuggestAddressState({required this.suggestion});
+}

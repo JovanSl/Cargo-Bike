@@ -8,11 +8,15 @@ import 'package:geocoding/geocoding.dart';
 import '../../../models/recipient.dart';
 import '../../../models/sender.dart';
 import '../../../models/location.dart' as loc;
+import '../../../models/suggested_address.dart';
 
 part 'new_delivery_event.dart';
 part 'new_delivery_state.dart';
 
 class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
+  String oldText = "";
+  Timer? _timerToStartSuggestionReq;
+  bool timerSwitcher = false;
   final DeliveryRepository repository;
   NewDeliveryBloc({required this.repository}) : super(NewDeliveryInitial()) {
     on<AddDeliveryEvent>(_addDelivery);
@@ -96,9 +100,31 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
     return x;
   }
 
+//Work in proggress
   FutureOr<void> _suggestAddress(
       SuggestAddress event, Emitter<NewDeliveryState> emit) async {
-    var result = await repository.suggestionProcess(event.address);
-    //print("rezultat" + result.body.toString());
+    List<Properties?> suggestions = [];
+    List<Suggested> result = [];
+    final v = event.address;
+    if (v.length > 3) {
+      if (_timerToStartSuggestionReq != null &&
+          _timerToStartSuggestionReq!.isActive) {
+        _timerToStartSuggestionReq!.cancel();
+      }
+      _timerToStartSuggestionReq =
+          Timer.periodic(const Duration(seconds: 1), (timer) async {
+        result = await repository.suggestionProcess(event.address);
+        for (var element in result) {
+          suggestions.add(element.properties);
+        }
+        timerSwitcher = true;
+        print(suggestions);
+        timer.cancel();
+      });
+    }
+  }
+
+  void test(Emitter<NewDeliveryState> emit, List<Properties?> suggestions) {
+    emit(SuggestAddressState(suggestion: suggestions));
   }
 }

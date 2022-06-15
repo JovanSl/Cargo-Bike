@@ -1,7 +1,7 @@
 import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:cargo_bike/src/features/delivery_details/delivery_details_screen.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
-import 'package:cargo_bike/src/features/new_delivery/new_order_screen.dart';
+import 'package:cargo_bike/src/features/new_delivery/new_delivery_screen.dart';
 import 'package:cargo_bike/src/features/settings/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const NewOrderScreen(),
+              builder: (context) => const NewDeliveryScreen(),
             ),
           );
         },

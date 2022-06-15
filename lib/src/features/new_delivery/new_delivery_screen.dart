@@ -8,14 +8,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../components/input_field_component.dart';
 import 'bloc/new_delivery_bloc.dart';
 
-class NewOrderScreen extends StatefulWidget {
-  const NewOrderScreen({Key? key}) : super(key: key);
+class NewDeliveryScreen extends StatefulWidget {
+  const NewDeliveryScreen({Key? key}) : super(key: key);
 
   @override
-  State<NewOrderScreen> createState() => _NewOrderScreenState();
+  State<NewDeliveryScreen> createState() => _NewDeliveryScreenState();
 }
 
-class _NewOrderScreenState extends State<NewOrderScreen> {
+class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
   final TextEditingController _senderName = TextEditingController();
   final TextEditingController _senderEmail = TextEditingController();
   final TextEditingController _senderAddress = TextEditingController();
@@ -81,7 +81,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
             }
           },
           builder: (context, state) {
-            if (state is NewDeliveryInitial || state is StateWithButton) {
+            if (state is NewDeliveryInitial ||
+                state is StateWithButton ||
+                state is SuggestAddressState) {
               if (state is StateWithButton) {
                 _isEnabled = true;
               }
@@ -104,12 +106,22 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                               email: _senderEmail.text,
                               phone: _senderPhone.text,
                               address: _senderAddress.text)));
+                      context
+                          .read<NewDeliveryBloc>()
+                          .add(SuggestAddress(address: _senderAddress.text));
                     },
                     child: TabBarView(children: <Widget>[
                       SingleChildScrollView(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
+                            if (state is SuggestAddressState)
+                              for (var element in state.suggestion)
+                                Text(element!.name.toString() +
+                                    ",  " +
+                                    element.city.toString() +
+                                    ",  " +
+                                    element.state.toString()),
                             const SizedBox(
                               height: 10,
                             ),
@@ -164,7 +176,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                       onPressed: () {
                         context.read<NewDeliveryBloc>().add(
                             const SuggestAddress(
-                                address: 'Devet jugovica novi sad'));
+                                address: 'Devet jugovica  novi sad'));
                       },
                       child: const Text("DUGME")),
                   Padding(
