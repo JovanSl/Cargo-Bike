@@ -16,18 +16,21 @@ part 'new_delivery_state.dart';
 class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
   String oldText = "";
   Timer? _timerToStartSuggestionReq;
-  bool timerSwitcher = false;
   final DeliveryRepository repository;
   NewDeliveryBloc({required this.repository}) : super(NewDeliveryInitial()) {
     on<AddDeliveryEvent>(_addDelivery);
     on<CheckUserInputEvent>(_checkInput);
     on<SetDeliveryToInitial>(_setInitial);
     on<SuggestAddress>(_suggestAddress);
+    on<AddressLoaded>(_emitAddresses);
   }
 
   FutureOr<void> _addDelivery(
       AddDeliveryEvent event, Emitter<NewDeliveryState> emit) async {
     List<Location> locations = [];
+    String addressSender = event.sender.address + "  " + event.senderAddress;
+    String addressRecipient =
+        event.recipient.address + "  " + event.recipientAddress;
     try {
       locations =
           await getLocations(event.sender.address, event.recipient.address);
@@ -41,7 +44,7 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
               name: event.sender.name,
               email: event.sender.email,
               phone: event.sender.phone,
-              address: event.sender.address,
+              address: addressSender,
               location: loc.Location(
                   lat: locations.first.latitude,
                   lng: locations.first.longitude),
@@ -50,7 +53,7 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
               name: event.recipient.name,
               additionalInfo: event.recipient.additionalInfo,
               phone: event.recipient.phone,
-              address: event.recipient.address,
+              address: addressRecipient,
               location: loc.Location(
                   lat: locations.last.latitude, lng: locations.last.longitude),
             ));
@@ -112,19 +115,24 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
         _timerToStartSuggestionReq!.cancel();
       }
       _timerToStartSuggestionReq =
-          Timer.periodic(const Duration(seconds: 1), (timer) async {
-        result = await repository.suggestionProcess(event.address);
-        for (var element in result) {
-          suggestions.add(element.properties);
+          Timer.periodic(const Duration(seconds: 2), (timer) async {
+        try {
+          result = await repository.suggestionProcess(event.address);
+          for (var element in result) {
+            suggestions.add(element.properties);
+            add(AddressLoaded(suggestions: suggestions));
+          }
+        } catch (e) {
+          rethrow;
         }
-        timerSwitcher = true;
-        print(suggestions);
+
         timer.cancel();
       });
     }
   }
 
-  void test(Emitter<NewDeliveryState> emit, List<Properties?> suggestions) {
-    emit(SuggestAddressState(suggestion: suggestions));
+  FutureOr<void> _emitAddresses(
+      AddressLoaded event, Emitter<NewDeliveryState> emit) {
+    emit(SuggestAddressState(suggestion: event.suggestions));
   }
 }

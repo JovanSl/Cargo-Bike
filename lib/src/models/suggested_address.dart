@@ -23,14 +23,24 @@ class Properties {
   String? city;
   String? name;
   String? state;
+  String? houseNumber;
+  String? street;
 
-  Properties({this.country, this.city, this.name, this.state});
+  Properties(
+      {this.country,
+      this.city,
+      this.name,
+      this.state,
+      this.houseNumber,
+      this.street});
 
   Properties.fromJson(Map<String, dynamic> json) {
     country = json['country'];
     city = json['city'];
     name = json['name'];
     state = json['state'];
+    houseNumber = json['housenumber'];
+    street = json['street'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +49,8 @@ class Properties {
     data['city'] = city;
     data['name'] = name;
     data['state'] = state;
+    data['housenumber'] = houseNumber;
+    data['street'] = street;
     return data;
   }
 }

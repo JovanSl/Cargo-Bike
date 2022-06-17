@@ -7,6 +7,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../components/input_field_component.dart';
 import 'bloc/new_delivery_bloc.dart';
+import 'components/address_input_field.dart';
+import 'components/address_suggestion_builder.dart';
 
 class NewDeliveryScreen extends StatefulWidget {
   const NewDeliveryScreen({Key? key}) : super(key: key);
@@ -24,6 +26,8 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
   final TextEditingController _recipientAddress = TextEditingController();
   final TextEditingController _recipientPhone = TextEditingController();
   final TextEditingController _additionalInfo = TextEditingController();
+  final TextEditingController _recipientStreetnumber = TextEditingController();
+  final TextEditingController _senderStreetnumber = TextEditingController();
   bool _isEnabled = false;
 
   @override
@@ -96,32 +100,27 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                   Form(
                     onChanged: () {
                       context.read<NewDeliveryBloc>().add(CheckUserInputEvent(
-                          recipient: Recipient(
+                            recipient: Recipient(
                               name: _recipientName.text,
                               address: _recipientAddress.text,
                               phone: _recipientPhone.text,
-                              additionalInfo: _additionalInfo.text),
-                          sender: Sender(
+                              additionalInfo: _additionalInfo.text,
+                            ),
+                            sender: Sender(
                               name: _senderName.text,
                               email: _senderEmail.text,
                               phone: _senderPhone.text,
-                              address: _senderAddress.text)));
-                      context
-                          .read<NewDeliveryBloc>()
-                          .add(SuggestAddress(address: _senderAddress.text));
+                              address: _senderAddress.text,
+                            ),
+                            _recipientStreetnumber.text,
+                            _senderStreetnumber.text,
+                          ));
                     },
                     child: TabBarView(children: <Widget>[
                       SingleChildScrollView(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            if (state is SuggestAddressState)
-                              for (var element in state.suggestion)
-                                Text(element!.name.toString() +
-                                    ",  " +
-                                    element.city.toString() +
-                                    ",  " +
-                                    element.state.toString()),
                             const SizedBox(
                               height: 10,
                             ),
@@ -137,11 +136,24 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                               controller: _senderPhone,
                               lable: AppLocalizations.of(context)!.phoneNumber,
                             ),
-                            InputFieldComponent(
-                              controller: _senderAddress,
+                            AddressInput(
+                              mainController: _senderAddress,
+                              recipientName: _recipientName,
+                              recipientAddress: _recipientAddress,
+                              recipientPhone: _recipientPhone,
+                              additionalInfo: _additionalInfo,
+                              senderName: _senderName,
+                              senderEmail: _senderEmail,
+                              senderPhone: _senderPhone,
+                              senderAddress: _senderAddress,
+                              streetnumber: _senderStreetnumber,
                               lable: AppLocalizations.of(context)!
                                   .receptionAddress,
                             ),
+                            if (state is SuggestAddressState)
+                              AddressSuggestionBuilder(
+                                  address: _senderAddress,
+                                  suggestion: state.suggestion),
                           ],
                         ),
                       ),
@@ -156,11 +168,6 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                             lable: AppLocalizations.of(context)!.name,
                           ),
                           InputFieldComponent(
-                            controller: _recipientAddress,
-                            lable:
-                                AppLocalizations.of(context)!.deliveryAddress,
-                          ),
-                          InputFieldComponent(
                             controller: _recipientPhone,
                             lable: AppLocalizations.of(context)!.phoneNumber,
                           ),
@@ -168,17 +175,27 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                             controller: _additionalInfo,
                             lable: AppLocalizations.of(context)!.additionalInfo,
                           ),
+                          AddressInput(
+                              mainController: _recipientAddress,
+                              recipientName: _recipientName,
+                              recipientAddress: _recipientAddress,
+                              recipientPhone: _recipientPhone,
+                              additionalInfo: _additionalInfo,
+                              senderName: _senderName,
+                              senderEmail: _senderEmail,
+                              senderPhone: _senderPhone,
+                              senderAddress: _senderAddress,
+                              streetnumber: _recipientStreetnumber,
+                              lable: AppLocalizations.of(context)!
+                                  .deliveryAddress),
+                          if (state is SuggestAddressState)
+                            AddressSuggestionBuilder(
+                                address: _recipientAddress,
+                                suggestion: state.suggestion),
                         ],
                       )
                     ]),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        context.read<NewDeliveryBloc>().add(
-                            const SuggestAddress(
-                                address: 'Devet jugovica  novi sad'));
-                      },
-                      child: const Text("DUGME")),
                   Padding(
                     padding: const EdgeInsets.all(40.0),
                     child: ElevatedButton(
@@ -188,19 +205,7 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                         ),
                         onPressed: _isEnabled
                             ? () {
-                                context.read<NewDeliveryBloc>().add(
-                                    AddDeliveryEvent(
-                                        recipient: Recipient(
-                                            name: _recipientName.text,
-                                            address: _recipientAddress.text,
-                                            phone: _recipientPhone.text,
-                                            additionalInfo:
-                                                _additionalInfo.text),
-                                        sender: Sender(
-                                            name: _senderName.text,
-                                            email: _senderEmail.text,
-                                            phone: _senderPhone.text,
-                                            address: _senderAddress.text)));
+                                addDelivery(context);
                               }
                             : null,
                         child:
@@ -217,6 +222,25 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
     );
   }
 
+  void addDelivery(BuildContext context) {
+    context.read<NewDeliveryBloc>().add(AddDeliveryEvent(
+          recipient: Recipient(
+            name: _recipientName.text,
+            address: _recipientAddress.text,
+            phone: _recipientPhone.text,
+            additionalInfo: _additionalInfo.text,
+          ),
+          sender: Sender(
+            name: _senderName.text,
+            email: _senderEmail.text,
+            phone: _senderPhone.text,
+            address: _senderAddress.text,
+          ),
+          _recipientStreetnumber.text,
+          _senderStreetnumber.text,
+        ));
+  }
+
   @override
   void dispose() {
     _senderName.dispose();
@@ -227,6 +251,8 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
     _recipientAddress.dispose();
     _recipientPhone.dispose();
     _additionalInfo.dispose();
+    _recipientStreetnumber.dispose();
+    _senderStreetnumber.dispose();
     super.dispose();
   }
 }
