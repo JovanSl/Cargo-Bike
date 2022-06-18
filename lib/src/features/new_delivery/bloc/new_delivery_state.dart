@@ -24,6 +24,7 @@ class BadAddressState extends NewDeliveryState {}
 
 class SuggestAddressState extends NewDeliveryState {
   final List<Properties?> suggestion;
+  final String form;
 
-  const SuggestAddressState({required this.suggestion});
+  const SuggestAddressState({required this.suggestion, required this.form});
 }

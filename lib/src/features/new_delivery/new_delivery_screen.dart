@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../components/input_field_component.dart';
 import 'bloc/new_delivery_bloc.dart';
+import 'components/address_card.dart';
 import 'components/address_input_field.dart';
 import 'components/address_suggestion_builder.dart';
 
@@ -149,11 +150,14 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                               streetnumber: _senderStreetnumber,
                               lable: AppLocalizations.of(context)!
                                   .receptionAddress,
+                              form: 'sender',
                             ),
                             if (state is SuggestAddressState)
-                              AddressSuggestionBuilder(
-                                  address: _senderAddress,
-                                  suggestion: state.suggestion),
+                              if (state.form == 'sender')
+                                SuggestionsCard(
+                                    child: AddressSuggestionBuilder(
+                                        address: _senderAddress,
+                                        suggestion: state.suggestion)),
                           ],
                         ),
                       ),
@@ -176,22 +180,27 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                             lable: AppLocalizations.of(context)!.additionalInfo,
                           ),
                           AddressInput(
-                              mainController: _recipientAddress,
-                              recipientName: _recipientName,
-                              recipientAddress: _recipientAddress,
-                              recipientPhone: _recipientPhone,
-                              additionalInfo: _additionalInfo,
-                              senderName: _senderName,
-                              senderEmail: _senderEmail,
-                              senderPhone: _senderPhone,
-                              senderAddress: _senderAddress,
-                              streetnumber: _recipientStreetnumber,
-                              lable: AppLocalizations.of(context)!
-                                  .deliveryAddress),
+                            mainController: _recipientAddress,
+                            recipientName: _recipientName,
+                            recipientAddress: _recipientAddress,
+                            recipientPhone: _recipientPhone,
+                            additionalInfo: _additionalInfo,
+                            senderName: _senderName,
+                            senderEmail: _senderEmail,
+                            senderPhone: _senderPhone,
+                            senderAddress: _senderAddress,
+                            streetnumber: _recipientStreetnumber,
+                            lable:
+                                AppLocalizations.of(context)!.deliveryAddress,
+                            form: 'receipant',
+                          ),
                           if (state is SuggestAddressState)
-                            AddressSuggestionBuilder(
-                                address: _recipientAddress,
-                                suggestion: state.suggestion),
+                            if (state.form == 'receipant')
+                              SuggestionsCard(
+                                child: AddressSuggestionBuilder(
+                                    address: _recipientAddress,
+                                    suggestion: state.suggestion),
+                              ),
                         ],
                       )
                     ]),

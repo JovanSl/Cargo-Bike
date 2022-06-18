@@ -20,6 +20,7 @@ class AddressInput extends StatelessWidget {
     required TextEditingController streetnumber,
     required this.mainController,
     required this.lable,
+    required this.form,
   })  : _recipientName = recipientName,
         _recipientAddress = recipientAddress,
         _recipientPhone = recipientPhone,
@@ -42,6 +43,7 @@ class AddressInput extends StatelessWidget {
   final TextEditingController _senderAddress;
   final TextEditingController _streetnumber;
   final String lable;
+  final String form;
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +99,6 @@ class AddressInput extends StatelessWidget {
         null));
     context
         .read<NewDeliveryBloc>()
-        .add(SuggestAddress(address: mainController.text));
+        .add(SuggestAddress(address: mainController.text, form: form));
   }
 }

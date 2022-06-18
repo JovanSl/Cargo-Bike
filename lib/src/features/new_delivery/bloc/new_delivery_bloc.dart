@@ -120,7 +120,7 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
           result = await repository.suggestionProcess(event.address);
           for (var element in result) {
             suggestions.add(element.properties);
-            add(AddressLoaded(suggestions: suggestions));
+            add(AddressLoaded(suggestions: suggestions, form: event.form));
           }
         } catch (e) {
           rethrow;
@@ -133,6 +133,6 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
 
   FutureOr<void> _emitAddresses(
       AddressLoaded event, Emitter<NewDeliveryState> emit) {
-    emit(SuggestAddressState(suggestion: event.suggestions));
+    emit(SuggestAddressState(suggestion: event.suggestions, form: event.form));
   }
 }

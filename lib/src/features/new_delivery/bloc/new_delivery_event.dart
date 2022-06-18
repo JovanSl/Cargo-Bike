@@ -31,12 +31,14 @@ class CheckUserInputEvent extends NewDeliveryEvent {
 
 class SuggestAddress extends NewDeliveryEvent {
   final String address;
+  final String form;
 
-  const SuggestAddress({required this.address});
+  const SuggestAddress({required this.form, required this.address});
 }
 
 class AddressLoaded extends NewDeliveryEvent {
   final List<Properties?> suggestions;
+  final String form;
 
-  const AddressLoaded({required this.suggestions});
+  const AddressLoaded({required this.suggestions, required this.form});
 }
