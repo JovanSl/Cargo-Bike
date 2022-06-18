@@ -36,5 +36,6 @@
   "from":"Od",
   "to":"Do",
   "details":"Detalji",
-  "cantDisplayMap":"Za zadatu lokaciju ne možemo prikazati mapu!"
+  "cantDisplayMap":"Za zadatu lokaciju ne možemo prikazati mapu!",
+  "errorLocationFormat":"Format adrese bi trebao biti: Ulica  broj, grad"
 }

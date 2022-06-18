@@ -12,13 +12,33 @@ class SetDeliveryToInitial extends NewDeliveryEvent {}
 class AddDeliveryEvent extends NewDeliveryEvent {
   final Sender sender;
   final Recipient recipient;
+  final String senderAddress;
+  final String recipientAddress;
 
-  const AddDeliveryEvent({required this.sender, required this.recipient});
+  const AddDeliveryEvent(this.senderAddress, this.recipientAddress,
+      {required this.sender, required this.recipient});
 }
 
 class CheckUserInputEvent extends NewDeliveryEvent {
   final Sender sender;
   final Recipient recipient;
+  final String? senderAddress;
+  final String? recipientAddress;
 
-  const CheckUserInputEvent({required this.sender, required this.recipient});
+  const CheckUserInputEvent(this.senderAddress, this.recipientAddress,
+      {required this.sender, required this.recipient});
+}
+
+class SuggestAddress extends NewDeliveryEvent {
+  final String address;
+  final String form;
+
+  const SuggestAddress({required this.form, required this.address});
+}
+
+class AddressLoaded extends NewDeliveryEvent {
+  final List<Properties?> suggestions;
+  final String form;
+
+  const AddressLoaded({required this.suggestions, required this.form});
 }

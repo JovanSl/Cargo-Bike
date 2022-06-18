@@ -5,16 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../components/input_field_component.dart';
 import 'bloc/new_delivery_bloc.dart';
+import 'components/address_card.dart';
+import 'components/address_input_field.dart';
+import 'components/address_suggestion_builder.dart';
 
-class NewOrderScreen extends StatefulWidget {
-  const NewOrderScreen({Key? key}) : super(key: key);
+class NewDeliveryScreen extends StatefulWidget {
+  const NewDeliveryScreen({Key? key}) : super(key: key);
 
   @override
-  State<NewOrderScreen> createState() => _NewOrderScreenState();
+  State<NewDeliveryScreen> createState() => _NewDeliveryScreenState();
 }
 
-class _NewOrderScreenState extends State<NewOrderScreen> {
+class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
   final TextEditingController _senderName = TextEditingController();
   final TextEditingController _senderEmail = TextEditingController();
   final TextEditingController _senderAddress = TextEditingController();
@@ -23,6 +27,8 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   final TextEditingController _recipientAddress = TextEditingController();
   final TextEditingController _recipientPhone = TextEditingController();
   final TextEditingController _additionalInfo = TextEditingController();
+  final TextEditingController _recipientStreetnumber = TextEditingController();
+  final TextEditingController _senderStreetnumber = TextEditingController();
   bool _isEnabled = false;
 
   @override
@@ -72,9 +78,17 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(AppLocalizations.of(context)!.error)));
             }
+            if (state is BadAddressState) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.errorLocationFormat)));
+              context.read<NewDeliveryBloc>().add(SetDeliveryToInitial());
+            }
           },
           builder: (context, state) {
-            if (state is NewDeliveryInitial || state is StateWithButton) {
+            if (state is NewDeliveryInitial ||
+                state is StateWithButton ||
+                state is SuggestAddressState) {
               if (state is StateWithButton) {
                 _isEnabled = true;
               }
@@ -87,16 +101,21 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   Form(
                     onChanged: () {
                       context.read<NewDeliveryBloc>().add(CheckUserInputEvent(
-                          recipient: Recipient(
+                            recipient: Recipient(
                               name: _recipientName.text,
                               address: _recipientAddress.text,
                               phone: _recipientPhone.text,
-                              additionalInfo: _additionalInfo.text),
-                          sender: Sender(
+                              additionalInfo: _additionalInfo.text,
+                            ),
+                            sender: Sender(
                               name: _senderName.text,
                               email: _senderEmail.text,
                               phone: _senderPhone.text,
-                              address: _senderAddress.text)));
+                              address: _senderAddress.text,
+                            ),
+                            _recipientStreetnumber.text,
+                            _senderStreetnumber.text,
+                          ));
                     },
                     child: TabBarView(children: <Widget>[
                       SingleChildScrollView(
@@ -118,11 +137,27 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                               controller: _senderPhone,
                               lable: AppLocalizations.of(context)!.phoneNumber,
                             ),
-                            InputFieldComponent(
-                              controller: _senderAddress,
+                            AddressInput(
+                              mainController: _senderAddress,
+                              recipientName: _recipientName,
+                              recipientAddress: _recipientAddress,
+                              recipientPhone: _recipientPhone,
+                              additionalInfo: _additionalInfo,
+                              senderName: _senderName,
+                              senderEmail: _senderEmail,
+                              senderPhone: _senderPhone,
+                              senderAddress: _senderAddress,
+                              streetnumber: _senderStreetnumber,
                               lable: AppLocalizations.of(context)!
                                   .receptionAddress,
+                              form: 'sender',
                             ),
+                            if (state is SuggestAddressState)
+                              if (state.form == 'sender')
+                                SuggestionsCard(
+                                    child: AddressSuggestionBuilder(
+                                        address: _senderAddress,
+                                        suggestion: state.suggestion)),
                           ],
                         ),
                       ),
@@ -137,11 +172,6 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                             lable: AppLocalizations.of(context)!.name,
                           ),
                           InputFieldComponent(
-                            controller: _recipientAddress,
-                            lable:
-                                AppLocalizations.of(context)!.deliveryAddress,
-                          ),
-                          InputFieldComponent(
                             controller: _recipientPhone,
                             lable: AppLocalizations.of(context)!.phoneNumber,
                           ),
@@ -149,6 +179,28 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                             controller: _additionalInfo,
                             lable: AppLocalizations.of(context)!.additionalInfo,
                           ),
+                          AddressInput(
+                            mainController: _recipientAddress,
+                            recipientName: _recipientName,
+                            recipientAddress: _recipientAddress,
+                            recipientPhone: _recipientPhone,
+                            additionalInfo: _additionalInfo,
+                            senderName: _senderName,
+                            senderEmail: _senderEmail,
+                            senderPhone: _senderPhone,
+                            senderAddress: _senderAddress,
+                            streetnumber: _recipientStreetnumber,
+                            lable:
+                                AppLocalizations.of(context)!.deliveryAddress,
+                            form: 'receipant',
+                          ),
+                          if (state is SuggestAddressState)
+                            if (state.form == 'receipant')
+                              SuggestionsCard(
+                                child: AddressSuggestionBuilder(
+                                    address: _recipientAddress,
+                                    suggestion: state.suggestion),
+                              ),
                         ],
                       )
                     ]),
@@ -162,19 +214,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                         ),
                         onPressed: _isEnabled
                             ? () {
-                                context.read<NewDeliveryBloc>().add(
-                                    AddDeliveryEvent(
-                                        recipient: Recipient(
-                                            name: _recipientName.text,
-                                            address: _recipientAddress.text,
-                                            phone: _recipientPhone.text,
-                                            additionalInfo:
-                                                _additionalInfo.text),
-                                        sender: Sender(
-                                            name: _senderName.text,
-                                            email: _senderEmail.text,
-                                            phone: _senderPhone.text,
-                                            address: _senderAddress.text)));
+                                addDelivery(context);
                               }
                             : null,
                         child:
@@ -191,6 +231,25 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     );
   }
 
+  void addDelivery(BuildContext context) {
+    context.read<NewDeliveryBloc>().add(AddDeliveryEvent(
+          recipient: Recipient(
+            name: _recipientName.text,
+            address: _recipientAddress.text,
+            phone: _recipientPhone.text,
+            additionalInfo: _additionalInfo.text,
+          ),
+          sender: Sender(
+            name: _senderName.text,
+            email: _senderEmail.text,
+            phone: _senderPhone.text,
+            address: _senderAddress.text,
+          ),
+          _recipientStreetnumber.text,
+          _senderStreetnumber.text,
+        ));
+  }
+
   @override
   void dispose() {
     _senderName.dispose();
@@ -201,45 +260,8 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     _recipientAddress.dispose();
     _recipientPhone.dispose();
     _additionalInfo.dispose();
+    _recipientStreetnumber.dispose();
+    _senderStreetnumber.dispose();
     super.dispose();
-  }
-}
-
-class InputFieldComponent extends StatelessWidget {
-  final TextEditingController controller;
-  final String lable;
-  const InputFieldComponent({
-    Key? key,
-    required this.controller,
-    required this.lable,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 40,
-      ),
-      child: TextFormField(
-        controller: controller,
-        cursorColor: Colors.lightGreen,
-        textAlignVertical: TextAlignVertical.center,
-        decoration: InputDecoration(
-          isCollapsed: true,
-          contentPadding: const EdgeInsets.only(left: 30, top: 24, bottom: 16),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.lightGreen.withOpacity(0.4)),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.lightGreen),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          labelText: lable,
-          labelStyle: const TextStyle(color: Colors.black),
-        ),
-      ),
-    );
   }
 }
