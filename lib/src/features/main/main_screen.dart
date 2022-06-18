@@ -13,6 +13,7 @@ import '../new_delivery/bloc/new_delivery_bloc.dart';
 import '../../components/delivery_list_tile.dart';
 
 class MainScreen extends StatefulWidget {
+  static const routeName = '/main';
   const MainScreen({Key? key}) : super(key: key);
 
   @override
