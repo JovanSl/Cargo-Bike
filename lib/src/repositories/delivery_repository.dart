@@ -13,10 +13,9 @@ import '../models/sender.dart';
 
 class DeliveryRepository {
   final _deliveries = FirebaseFirestore.instance.collection('deliveries');
-  final _user = FirebaseAuth.instance.currentUser!.uid;
-  List<Delivery> allDeliveries = [];
 
   Future<void> addDelivery(Sender sender, Recipient recipient) {
+    final _user = FirebaseAuth.instance.currentUser!.uid;
     DocumentReference documentReference = _deliveries.doc();
     return documentReference.set(Delivery(
             userId: _user,
@@ -28,6 +27,8 @@ class DeliveryRepository {
   }
 
   Future<List<Delivery>> getActiveDeliveries() async {
+    final _user = FirebaseAuth.instance.currentUser!.uid;
+    List<Delivery> allDeliveries = [];
     var result = await _deliveries.get();
     try {
       allDeliveries = result.docs
@@ -42,6 +43,8 @@ class DeliveryRepository {
   }
 
   Future<List<Delivery>> getHistory() async {
+    final _user = FirebaseAuth.instance.currentUser!.uid;
+    List<Delivery> allDeliveries = [];
     var result = await _deliveries.get();
     try {
       allDeliveries = result.docs

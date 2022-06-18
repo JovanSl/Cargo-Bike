@@ -1,6 +1,7 @@
 import 'package:cargo_bike/src/features/authentication/bloc/auth_bloc.dart';
 import 'package:cargo_bike/src/features/history/bloc/history_bloc.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
+import 'package:cargo_bike/src/features/main/main_screen.dart';
 import 'package:cargo_bike/src/repositories/delivery_repository.dart';
 import 'package:cargo_bike/src/repositories/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -135,7 +136,8 @@ class _MyAppState extends State<MyApp> {
                           case HomeScreen.routeName:
                             return HomeScreen(
                                 settingsController: widget.settingsController);
-
+                          case MainScreen.routeName:
+                            return const MainScreen();
                           case AuthScreen.routeName:
                             return const AuthScreen();
                           default:
