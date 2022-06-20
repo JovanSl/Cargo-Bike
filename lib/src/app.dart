@@ -1,4 +1,5 @@
 import 'package:cargo_bike/src/features/authentication/bloc/auth_bloc.dart';
+import 'package:cargo_bike/src/features/delivery_details/bloc/delivery_details_bloc.dart';
 import 'package:cargo_bike/src/features/history/bloc/history_bloc.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
 import 'package:cargo_bike/src/features/main/main_screen.dart';
@@ -55,6 +56,9 @@ class _MyAppState extends State<MyApp> {
               BlocProvider<HistoryBloc>(
                   create: (context) =>
                       HistoryBloc(repository: DeliveryRepository())),
+              BlocProvider<DeliveryDetailsBloc>(
+                  create: (context) =>
+                      DeliveryDetailsBloc(repository: DeliveryRepository())),
               BlocProvider<MainListBloc>(
                   create: (context) =>
                       MainListBloc(repository: DeliveryRepository())

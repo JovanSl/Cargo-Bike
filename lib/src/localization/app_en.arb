@@ -42,5 +42,7 @@
   "logoutMessage":"Are you sure you want to log out?",
   "yes":"Yes",
   "no":"No",
-  "streetNumber":"Street number"
+  "streetNumber":"Street number",
+  "deleteSuccessful":"Successfully deleted delivery",
+  "deleteConfirm":"Do you want to delete this delivery?"
 }

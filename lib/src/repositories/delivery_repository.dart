@@ -72,4 +72,8 @@ class DeliveryRepository {
       throw ApiException("Api Error");
     }
   }
+
+  Future<void> removeDelivery(String id) {
+    return _deliveries.doc(id).delete();
+  }
 }
