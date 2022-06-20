@@ -37,5 +37,8 @@
   "to":"Do",
   "details":"Detalji",
   "cantDisplayMap":"Za zadatu lokaciju ne možemo prikazati mapu!",
-  "errorLocationFormat":"Format adrese bi trebao biti: Ulica  broj, grad"
+  "errorLocationFormat":"Format adrese bi trebao biti: Ulica  broj, grad",
+  "logoutMessage":"Da li ste sigurni da želite da se odjavite?",
+  "yes":"Da",
+  "no":"Ne"
 }

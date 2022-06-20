@@ -38,5 +38,8 @@
   "to":"To",
   "details":"Details",
   "cantDisplayMap":"Can't display map for provided location",
-  "errorLocationFormat":"Address format should be like: Street, Street number, city"
+  "errorLocationFormat":"Address format should be like: Street, Street number, city",
+  "logoutMessage":"Are you sure you want to log out?",
+  "yes":"Yes",
+  "no":"No"
 }

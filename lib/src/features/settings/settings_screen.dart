@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../authentication/bloc/auth_bloc.dart';
+import 'components/logout_alert_dialog.dart';
 import 'settings_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -51,9 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: GestureDetector(
-                  onTap: () {
-                    context.read<AuthBloc>().add(LogOutEvent());
-                  },
+                  onTap: () => logoutDialog(context),
                   child: Text(
                     AppLocalizations.of(context)!.logout,
                     style: CargoBikeStyle.textStyle.errorText
