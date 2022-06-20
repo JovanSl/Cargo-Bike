@@ -148,8 +148,10 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                               senderPhone: _senderPhone,
                               senderAddress: _senderAddress,
                               streetnumber: _senderStreetnumber,
-                              lable: AppLocalizations.of(context)!
+                              lableAddress: AppLocalizations.of(context)!
                                   .receptionAddress,
+                              lableStreetNumber:
+                                  AppLocalizations.of(context)!.streetNumber,
                               form: 'sender',
                             ),
                             if (state is SuggestAddressState)
@@ -190,8 +192,10 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                             senderPhone: _senderPhone,
                             senderAddress: _senderAddress,
                             streetnumber: _recipientStreetnumber,
-                            lable:
+                            lableAddress:
                                 AppLocalizations.of(context)!.deliveryAddress,
+                            lableStreetNumber:
+                                AppLocalizations.of(context)!.streetNumber,
                             form: 'receipant',
                           ),
                           if (state is SuggestAddressState)

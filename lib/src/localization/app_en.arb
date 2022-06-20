@@ -41,5 +41,6 @@
   "errorLocationFormat":"Address format should be like: Street, Street number, city",
   "logoutMessage":"Are you sure you want to log out?",
   "yes":"Yes",
-  "no":"No"
+  "no":"No",
+  "streetNumber":"Street number"
 }
