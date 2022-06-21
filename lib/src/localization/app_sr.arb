@@ -1,5 +1,6 @@
 {
   "appTitle": "cargo_bike",
+  "appName":"Cargo Bike",
   "test":"Sve Dostave",
   "language":"Jezik",
   "settings":"Podešavanja",
@@ -24,9 +25,9 @@
   "loginForm":"Forma za login",
   "register":"Registruj se",
   "logIn":"Uloguj se",
-  "registerForm":"Forma za registraciju",
+  "registerForm":"Nemate nalog? Registrujte se",
   "confirmPassword":"Potvrdite lozinku",
-  "backToLogIn":"Povratak na login",
+  "backToLogIn":"Imate nalog? Ulogujte se",
   "gallery":"Galerija",
   "camera":"Kamera",
   "lastName":"Prezime",

@@ -28,7 +28,7 @@ class RegisterForm extends StatelessWidget {
     return Center(
       child: Column(children: <Widget>[
         Text(
-          AppLocalizations.of(context)!.registerForm,
+          AppLocalizations.of(context)!.appName,
           style: CargoBikeStyle.textStyle.heading1Text,
         ),
         const HeightBox(),
