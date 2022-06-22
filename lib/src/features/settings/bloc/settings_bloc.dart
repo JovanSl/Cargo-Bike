@@ -16,6 +16,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   String? userAddress;
   String? userPhone;
   String? imageUrl;
+  bool? isCourrier;
 
   final AuthRepository repository;
   SettingsBloc({required this.repository}) : super(SettingsInitial()) {
@@ -27,6 +28,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   FutureOr<void> _submitChanges(
       SubmitChangesEvent event, Emitter<SettingsState> emit) async {
     try {
+      print(event.user.isCourrier.toString());
       await repository.saveUserInfo(event.user, event.image);
       emit(UserSavedSuccessState());
     } on Exception {
@@ -44,6 +46,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       userAddress = user.address;
       userPhone = user.phone;
       imageUrl = user.imageUrl;
+      isCourrier = user.isCourrier;
     } catch (e) {
       user = null;
     }
@@ -52,11 +55,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     } else if (user == null) {
       emit(UserLoadedState(
           user: UserModel(
-              address: '',
-              firstName: '',
-              lastName: '',
-              phone: '',
-              imageUrl: '')));
+        address: '',
+        firstName: '',
+        lastName: '',
+        phone: '',
+        imageUrl: '',
+        isCourrier: user?.isCourrier,
+      )));
     } else {
       emit(ErrorState());
     }
@@ -76,7 +81,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
               lastName: event.user.lastName,
               imageUrl: event.user.imageUrl!,
               address: event.user.address,
-              phone: event.user.phone)));
+              phone: event.user.phone,
+              isCourrier: event.user.isCourrier)));
     } else {
       emit(UserLoadedState(
           user: UserModel(

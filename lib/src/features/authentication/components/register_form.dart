@@ -1,3 +1,4 @@
+import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -8,7 +9,7 @@ import '../../../constants/styles.dart';
 import '../bloc/auth_bloc.dart';
 import 'error_message.dart';
 
-class RegisterForm extends StatelessWidget {
+class RegisterForm extends StatefulWidget {
   const RegisterForm({
     Key? key,
     required TextEditingController emailController,
@@ -22,7 +23,12 @@ class RegisterForm extends StatelessWidget {
   final TextEditingController _emailController;
   final TextEditingController _passwordController;
   final TextEditingController _passwordConfirmController;
+  @override
+  State<RegisterForm> createState() => _RegisterFormState();
+}
 
+class _RegisterFormState extends State<RegisterForm> {
+  bool _isSwitched = false;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -35,20 +41,38 @@ class RegisterForm extends StatelessWidget {
         const LoginErrorMessage(),
         const HeightBox(),
         CargoBikeInputField(
-          controller: _emailController,
+          controller: widget._emailController,
           hintText: AppLocalizations.of(context)!.emailAddress,
         ),
         const HeightBox(),
         CargoBikeInputField(
-          controller: _passwordController,
+          controller: widget._passwordController,
           hintText: AppLocalizations.of(context)!.password,
           hideText: true,
         ),
         const HeightBox(),
         CargoBikeInputField(
-          controller: _passwordConfirmController,
+          controller: widget._passwordConfirmController,
           hintText: AppLocalizations.of(context)!.confirmPassword,
           hideText: true,
+        ),
+        Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(AppLocalizations.of(context)!.ifCourrier),
+              const SizedBox(width: 20),
+              Switch(
+                activeColor: CargoBikeColors.darkGreen,
+                value: _isSwitched,
+                onChanged: (value) {
+                  setState(() {
+                    _isSwitched = value;
+                  });
+                },
+              ),
+            ],
+          ),
         ),
         const HeightBox(),
         GestureDetector(
@@ -65,9 +89,10 @@ class RegisterForm extends StatelessWidget {
             onPressed: () {
               context.read<AuthBloc>().add(
                     RegisterEvent(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                      confirm: _passwordConfirmController.text,
+                      email: widget._emailController.text,
+                      password: widget._passwordController.text,
+                      confirm: widget._passwordConfirmController.text,
+                      ifCourrier: _isSwitched,
                     ),
                   );
             },

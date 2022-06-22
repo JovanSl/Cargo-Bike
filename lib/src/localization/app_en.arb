@@ -45,5 +45,6 @@
   "no":"No",
   "streetNumber":"Street number",
   "deleteSuccessful":"Successfully deleted delivery",
-  "deleteConfirm":"Do you want to delete this delivery?"
+  "deleteConfirm":"Do you want to delete this delivery?",
+  "ifCourrier":"Register as a courrier?"
 }

@@ -18,12 +18,17 @@ class AuthRepository {
     );
   }
 
-  Future<UserCredential> signUpWithCredentials(
+  Future<UserCredential> signUpWithCredentials(UserModel user,
       {required String email, required String password}) async {
-    return await auth.createUserWithEmailAndPassword(
+    return await auth
+        .createUserWithEmailAndPassword(
       email: email,
       password: password,
-    );
+    )
+        .whenComplete(() {
+      user.userId = FirebaseAuth.instance.currentUser!.uid;
+      _users.doc(FirebaseAuth.instance.currentUser!.uid).set(user.toJson());
+    });
   }
 
   Future<void> signOut() async {

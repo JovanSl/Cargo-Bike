@@ -29,6 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final TextEditingController lastName = TextEditingController();
   final TextEditingController address = TextEditingController();
   final TextEditingController phone = TextEditingController();
+  bool? _isCourrier;
   bool visible = false;
   String imageUrl = '';
   File? image;
@@ -89,6 +90,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 phone.text = state.user.phone!;
                 imageUrl = state.user.imageUrl ?? '';
                 visible = false;
+                print("OVO" + state.user.isCourrier.toString());
+                _isCourrier = state.user.isCourrier;
               }
               if (state is UserButtonState) {
                 firstName.text = state.user.firstName!;
@@ -97,6 +100,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 phone.text = state.user.phone!;
                 imageUrl = state.user.imageUrl ?? '';
                 visible = true;
+                print("ONO" + state.user.isCourrier.toString());
+                _isCourrier = state.user.isCourrier;
               }
             }
             return Form(
@@ -109,6 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             address: address.text,
                             phone: phone.text,
                             imageUrl: imageUrl,
+                            isCourrier: _isCourrier,
                           ),
                           image),
                     );
@@ -131,6 +137,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   address: address.text,
                                   phone: phone.text,
                                   imageUrl: imageUrl,
+                                  isCourrier: _isCourrier,
                                 ),
                                 image),
                           );
@@ -172,6 +179,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         address: address.text,
                                         phone: phone.text,
                                         imageUrl: imageUrl,
+                                        isCourrier: _isCourrier,
                                       ),
                                       image));
                             },

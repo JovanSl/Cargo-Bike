@@ -44,5 +44,7 @@
   "no":"Ne",
   "streetNumber":"Broj ulice",
   "deleteSuccessful":"Uspešno obrisano",
-  "deleteConfirm":"Da li ste sigurni da želite da obrišete ovu isporuku?"
+  "deleteConfirm":"Da li ste sigurni da želite da obrišete ovu isporuku?",
+  "ifCourrier":"Registruj se kao kurir?"
+  
 }

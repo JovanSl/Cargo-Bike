@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:cargo_bike/src/models/user.dart';
 import 'package:cargo_bike/src/utils/password_validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,6 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       try {
         await repository.signUpWithCredentials(
+          UserModel(isCourrier: event.ifCourrier),
           email: event.email,
           password: event.password,
         );
