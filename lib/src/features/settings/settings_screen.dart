@@ -90,7 +90,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 phone.text = state.user.phone!;
                 imageUrl = state.user.imageUrl ?? '';
                 visible = false;
-                print("OVO" + state.user.isCourrier.toString());
                 _isCourrier = state.user.isCourrier;
               }
               if (state is UserButtonState) {
@@ -100,7 +99,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 phone.text = state.user.phone!;
                 imageUrl = state.user.imageUrl ?? '';
                 visible = true;
-                print("ONO" + state.user.isCourrier.toString());
                 _isCourrier = state.user.isCourrier;
               }
             }

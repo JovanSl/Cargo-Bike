@@ -28,7 +28,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   FutureOr<void> _submitChanges(
       SubmitChangesEvent event, Emitter<SettingsState> emit) async {
     try {
-      print(event.user.isCourrier.toString());
       await repository.saveUserInfo(event.user, event.image);
       emit(UserSavedSuccessState());
     } on Exception {
