@@ -1,9 +1,13 @@
+import 'package:cargo_bike/src/components/progress_indicator.dart';
+import 'package:cargo_bike/src/features/new_incident/new_incident_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map_dragmarker/dragmarker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'dart:math';
+
+import 'bloc/incident_bloc.dart';
+import 'components/map_popup.dart';
 
 class IncidentScreen extends StatefulWidget {
   static const routName = '/courrier';
@@ -16,87 +20,77 @@ class IncidentScreen extends StatefulWidget {
 class _IncidentScreenState extends State<IncidentScreen> {
   final PopupController _popupLayerController = PopupController();
 
-  final List<LatLng> _markerPositions = [
-    LatLng(44.421, 10.404),
-    LatLng(45.683, 10.839),
-    LatLng(45.246, 5.783),
-  ];
+  final List<LatLng> _markerPositions = [];
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < 100; i++) {
-      var lng = Random().nextInt(20);
-      var rng = Random().nextInt(20);
-      _markerPositions.add(LatLng(44.421 + lng, 10.404 + rng));
-    }
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NewIncidentScreen(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(title: const Text('KURIR')),
-      body: FlutterMap(
-        options: MapOptions(
-          plugins: [
-            DragMarkerPlugin(),
-          ],
-          allowPanningOnScrollingParent: false,
-          center: LatLng(44.421, 10.404),
-          zoom: 4.0,
-          onTap: (_, __) => _popupLayerController
-              .hideAllPopups(), // Hide popup when the map is tapped.
-        ),
-        layers: [
-          TileLayerOptions(
-              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-              subdomains: ['a', 'b', 'c']),
-          DragMarkerPluginOptions(
-            markers: [
-              DragMarker(
-                point: LatLng(45.2131, 11.6765),
-                width: 80.0,
-                height: 80.0,
-                offset: const Offset(0.0, -8.0),
-                builder: (ctx) => const Icon(Icons.location_on, size: 50),
-                onDragStart: (details, point) => print("Start point $point"),
-                onDragEnd: (details, point) => print("End point $point"),
-                onDragUpdate: (details, point) {},
-                onTap: (point) {
-                  print("on tap");
-                },
-                onLongPress: (point) {
-                  print("on long press");
-                },
-                feedbackBuilder: (ctx) =>
-                    const Icon(Icons.edit_location, size: 75),
-                feedbackOffset: const Offset(0.0, -9.0),
-                updateMapNearEdge:
-                    true, // Experimental, move the map when marker close to edge
-                nearEdgeRatio: 0.7, // Experimental
-                nearEdgeSpeed: 1.0, // Experimental
-                rotateMarker: true, // Experimental
+      body: BlocConsumer<IncidentBloc, IncidentState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          if (state is IncidentLoadingState) {
+            return const CargoBikeProgressIndicator();
+          } else if (state is AllIncidentsState) {
+            for (int i = 0; i < state.allIncidents.length; i++) {
+              _markerPositions.add(LatLng(state.allIncidents[i].location.lat,
+                  state.allIncidents[i].location.lng));
+            }
+            return FlutterMap(
+              options: MapOptions(
+                allowPanningOnScrollingParent: false,
+                center: LatLng(45.2623752, 19.84910386),
+                zoom: 12.0,
+                onTap: (_, __) => _popupLayerController
+                    .hideAllPopups(), // Hide popup when the map is tapped.
               ),
-            ],
-          ),
-        ],
-        // children: const [
-        //   // TileLayerWidget(
-        //   //   options: TileLayerOptions(
-        //   //     //https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png
-        //   //     urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        //   //     subdomains: ['a', 'b', 'c'],
-        //   //   ),
-        //   // ),
-        //   // PopupMarkerLayerWidget(
-        //   //   options: PopupMarkerLayerOptions(
-        //   //     popupController: _popupLayerController,
-        //   //     markers: _markers,
-        //   //     markerRotateAlignment:
-        //   //         PopupMarkerLayerOptions.rotationAlignmentFor(AnchorAlign.top),
-        //   //     popupBuilder: (BuildContext context, Marker marker) =>
-        //   //         MapPopup(marker),
-        //   //   ),
-        //   // ),
-        // ],
+              children: [
+                TileLayerWidget(
+                  options: TileLayerOptions(
+                    //https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png
+                    urlTemplate:
+                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    subdomains: ['a', 'b', 'c'],
+                  ),
+                ),
+                PopupMarkerLayerWidget(
+                  options: PopupMarkerLayerOptions(
+                    popupController: _popupLayerController,
+                    markers: _markers,
+                    markerRotateAlignment:
+                        PopupMarkerLayerOptions.rotationAlignmentFor(
+                            AnchorAlign.top),
+                    popupBuilder: (BuildContext context, Marker marker) =>
+                        MapPopup(marker),
+                  ),
+                ),
+              ],
+            );
+          } else if (state is IncidentErrorState) {
+            return const Center(
+              child: Text('Error'),
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
       ),
     );
   }
 
+//markers
   List<Marker> get _markers => _markerPositions
       .map(
         (markerPosition) => Marker(

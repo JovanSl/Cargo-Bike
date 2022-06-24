@@ -1,16 +1,19 @@
 import 'package:cargo_bike/src/features/authentication/bloc/auth_bloc.dart';
 import 'package:cargo_bike/src/features/delivery_details/bloc/delivery_details_bloc.dart';
 import 'package:cargo_bike/src/features/history/bloc/history_bloc.dart';
+import 'package:cargo_bike/src/features/incidents/incidents_screen.dart';
 import 'package:cargo_bike/src/features/main/bloc/main_list_bloc.dart';
 import 'package:cargo_bike/src/features/main/main_screen.dart';
 import 'package:cargo_bike/src/repositories/delivery_repository.dart';
 import 'package:cargo_bike/src/repositories/auth_repository.dart';
+import 'package:cargo_bike/src/repositories/incident_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'features/authentication/auth_screen.dart';
 import 'features/home/home_screen.dart';
+import 'features/incidents/bloc/incident_bloc.dart';
 import 'features/new_delivery/bloc/new_delivery_bloc.dart';
 import 'features/settings/bloc/settings_bloc.dart';
 import 'features/settings/settings_controller.dart';
@@ -46,9 +49,16 @@ class _MyAppState extends State<MyApp> {
             RepositoryProvider<DeliveryRepository>(
               create: (context) => DeliveryRepository(),
             ),
+            RepositoryProvider<IncidentRepository>(
+              create: (context) => IncidentRepository(),
+            ),
           ],
           child: MultiBlocProvider(
             providers: [
+              BlocProvider<IncidentBloc>(
+                  create: (context) =>
+                      IncidentBloc(repository: IncidentRepository())
+                        ..add(GetAllIncidentsEvent())),
               BlocProvider<SettingsBloc>(
                   create: (context) =>
                       SettingsBloc(repository: AuthRepository())
@@ -142,6 +152,8 @@ class _MyAppState extends State<MyApp> {
                                 settingsController: widget.settingsController);
                           case MainScreen.routeName:
                             return const MainScreen();
+                          case IncidentScreen.routName:
+                            return const IncidentScreen();
                           case AuthScreen.routeName:
                             return const AuthScreen();
                           default:
