@@ -44,13 +44,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (context.select((SettingsBloc bloc) => bloc.isCourrier == true)) {
+    if (context.select((SettingsBloc bloc) => bloc.isCourrier) == true) {
       return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          allowImplicitScrolling: false,
           children: <Widget>[
-            const IncidentScreen(),
+            const MainScreen(),
             const HistoryScreen(),
+            const IncidentScreen(),
             SettingsScreen(
               controller: widget.settingsController,
             )
@@ -86,6 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
               BottomNavigationBarItem(
                 label: AppLocalizations.of(context)!.history,
                 icon: const Icon(Icons.history),
+              ),
+              const BottomNavigationBarItem(
+                label: 'Incidents screen',
+                icon: Icon(Icons.car_crash),
               ),
               BottomNavigationBarItem(
                 label: AppLocalizations.of(context)!.settings,

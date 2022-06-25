@@ -45,6 +45,9 @@
   "streetNumber":"Broj ulice",
   "deleteSuccessful":"Uspešno obrisano",
   "deleteConfirm":"Da li ste sigurni da želite da obrišete ovu isporuku?",
-  "ifCourrier":"Registruj se kao kurir?"
+  "ifCourrier":"Registruj se kao kurir?",
+  "sendAgain":"Pošalji ponovo",
+  "registrationSuccesfull":"Tvoj nalog je uspešno kreiran. Proveri svoj mejl i verifikujte se putem linka",
+  "noMail":"Nisi dobio/la mail? Klikni na dugme ispod za ponovno slanje"
   
 }

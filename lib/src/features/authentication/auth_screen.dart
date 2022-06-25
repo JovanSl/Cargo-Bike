@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'components/login_form.dart';
 import 'components/register_form.dart';
+import 'components/verify_email.dart';
 
 class AuthScreen extends StatefulWidget {
   static const routeName = '/auth';
@@ -46,6 +47,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     emailController: _emailController,
                     passwordController: _passwordController,
                     passwordConfirmController: _passwordConfirmController);
+              }
+              if (state is NotVerifiedEmailState) {
+                return const VerifyEmail();
               } else {
                 return const SizedBox();
               }

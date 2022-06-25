@@ -43,3 +43,5 @@ class LogOutEvent extends AuthEvent {}
 class CheckUserStatusEvent extends AuthEvent {}
 
 class SwitchToRegister extends AuthEvent {}
+
+class SendVerificationEmailEvent extends AuthEvent {}

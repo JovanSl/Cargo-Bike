@@ -19,13 +19,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<CheckUserStatusEvent>(_checkUserStatus);
     on<LogOutEvent>(_logOut);
     on<SwitchToRegister>(_switchToRegister);
+    on<SendVerificationEmailEvent>(_sendVerificationEmail);
   }
 
   Future<void> _checkUserStatus(
       CheckUserStatusEvent event, Emitter<AuthState> emit) async {
     final isSignedIn = await repository.isSignedIn();
 
-    if (isSignedIn) {
+    if (isSignedIn && repository.checkIfVerified()) {
       emit(RegisterSuccessState());
     } else {
       emit(UnauthenticatedState());
@@ -49,7 +50,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: event.email,
           password: event.password,
         );
-        emit(RegisterSuccessState());
+        await repository.sendVerificationMail();
+        emit(NotVerifiedEmailState());
       } on FirebaseAuthException catch (e) {
         emit(RegisterErrorState(error: e.message));
       }
@@ -61,11 +63,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const LoginErrorState(error: 'Email or password can\'t be empty'));
     } else {
       try {
-        await repository.logInWithCredentials(
+        final UserCredential userCredential =
+            await repository.logInWithCredentials(
           email: event.email,
           password: event.password,
         );
-        emit(RegisterSuccessState());
+        if (userCredential.user!.emailVerified) {
+          emit(RegisterSuccessState());
+        } else {
+          emit(NotVerifiedEmailState());
+        }
       } on FirebaseAuthException catch (e) {
         emit(LoginErrorState(error: e.message));
       }
@@ -84,5 +91,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       emit(RegisterState());
     }
+  }
+
+  FutureOr<void> _sendVerificationEmail(event, Emitter<AuthState> emit) async {
+    await repository.sendVerificationMail();
   }
 }

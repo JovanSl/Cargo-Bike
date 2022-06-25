@@ -3,6 +3,7 @@ import 'package:cargo_bike/src/features/new_incident/components/location_picker_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location/location.dart' as lokacija;
+import 'package:geocoding/geocoding.dart' as geocoding;
 
 import '../../models/incident.dart';
 import '../../models/location.dart';
@@ -20,6 +21,8 @@ class _NewIncidentScreenState extends State<NewIncidentScreen> {
   final TextEditingController message = TextEditingController();
   double? lng = 0, lat = 0;
   Location pickedLocation = Location(lat: 0, lng: 0);
+  List<geocoding.Placemark>? placemarks;
+
   @override
   Widget build(BuildContext context) {
     lokacija.Location location = lokacija.Location();
@@ -39,7 +42,9 @@ class _NewIncidentScreenState extends State<NewIncidentScreen> {
               lable: 'Poruka',
               controller: message,
             ),
-            Text("Current location :" + lat.toString() + ", " + lng.toString()),
+            Text(placemarks?.first.toString() == null
+                ? ''
+                : placemarks!.first.street.toString()),
             const SizedBox(height: 20),
             ElevatedButton(
                 onPressed: () async {
@@ -61,9 +66,12 @@ class _NewIncidentScreenState extends State<NewIncidentScreen> {
                   }
 
                   _locationData = await location.getLocation();
+                  placemarks = await geocoding.placemarkFromCoordinates(
+                      _locationData.latitude!, _locationData.longitude!);
                   setState(() {
                     lng = _locationData.longitude;
                     lat = _locationData.latitude;
+                    placemarks = placemarks;
                   });
                 },
                 child: const Text('Get Current Location')),
@@ -75,9 +83,13 @@ class _NewIncidentScreenState extends State<NewIncidentScreen> {
                     MaterialPageRoute(
                         builder: (context) => const LocationPickerMap()),
                   );
+                  placemarks = await geocoding.placemarkFromCoordinates(
+                      pickedLocation.lat, pickedLocation.lng);
                   setState(() {
                     lng = pickedLocation.lng;
                     lat = pickedLocation.lat;
+
+                    placemarks = placemarks;
                   });
                 },
                 child: const Text('Pick location from map')),

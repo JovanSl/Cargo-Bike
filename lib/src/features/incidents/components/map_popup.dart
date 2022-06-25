@@ -3,38 +3,22 @@ import 'package:flutter_map/flutter_map.dart';
 
 class MapPopup extends StatefulWidget {
   final Marker marker;
-
-  const MapPopup(this.marker, {Key? key}) : super(key: key);
+  final String text;
+  const MapPopup(this.marker, {Key? key, required this.text}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _MapPopupState();
 }
 
 class _MapPopupState extends State<MapPopup> {
-  final List<IconData> _icons = [
-    Icons.star_border,
-    Icons.star_half,
-    Icons.star
-  ];
-  int _currentIcon = 0;
-
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: InkWell(
-        onTap: () => setState(() {
-          _currentIcon = (_currentIcon + 1) % _icons.length;
-        }),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 10),
-              child: Icon(_icons[_currentIcon]),
-            ),
-            _cardDescription(context),
-          ],
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _cardDescription(context),
+        ],
       ),
     );
   }
@@ -48,8 +32,8 @@ class _MapPopupState extends State<MapPopup> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Text(
+          children: const <Widget>[
+            Text(
               'Popup for a marker!',
               overflow: TextOverflow.fade,
               softWrap: false,
@@ -57,15 +41,6 @@ class _MapPopupState extends State<MapPopup> {
                 fontWeight: FontWeight.w500,
                 fontSize: 14.0,
               ),
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
-            Text(
-              'Position: ${widget.marker.point.latitude}, ${widget.marker.point.longitude}',
-              style: const TextStyle(fontSize: 12.0),
-            ),
-            Text(
-              'Marker size: ${widget.marker.width}, ${widget.marker.height}',
-              style: const TextStyle(fontSize: 12.0),
             ),
           ],
         ),

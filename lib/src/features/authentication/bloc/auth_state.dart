@@ -17,6 +17,8 @@ class LoginState extends AuthState {}
 
 class RegisterState extends AuthState {}
 
+class NotVerifiedEmailState extends AuthState {}
+
 class LoginErrorState extends AuthState {
   final String? error;
 

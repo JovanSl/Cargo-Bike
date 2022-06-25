@@ -73,7 +73,10 @@ class _IncidentScreenState extends State<IncidentScreen> {
                         PopupMarkerLayerOptions.rotationAlignmentFor(
                             AnchorAlign.top),
                     popupBuilder: (BuildContext context, Marker marker) =>
-                        MapPopup(marker),
+                        MapPopup(
+                      marker,
+                      text: '',
+                    ),
                   ),
                 ),
               ],

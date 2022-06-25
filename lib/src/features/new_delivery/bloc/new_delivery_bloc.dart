@@ -96,6 +96,7 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
     emit(NewDeliveryInitial());
   }
 
+  //Potenital fix needed
   Future getLocations(location1, location2) async {
     List<Location> x = [];
     x.addAll(await locationFromAddress(location1));
@@ -103,7 +104,6 @@ class NewDeliveryBloc extends Bloc<NewDeliveryEvent, NewDeliveryState> {
     return x;
   }
 
-//Work in proggress
   FutureOr<void> _suggestAddress(
       SuggestAddress event, Emitter<NewDeliveryState> emit) async {
     List<Properties?> suggestions = [];
