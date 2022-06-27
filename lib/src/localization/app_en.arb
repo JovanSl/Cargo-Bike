@@ -49,6 +49,8 @@
   "ifCourrier":"Register as a courrier?",
   "sendAgain":"Resend",
   "registrationSuccesfull":"Your account has been successfully created. \nCheck your email for verification link.",
-  "noMail":"Didn't recive verification email? \nResend"
+  "noMail":"Didn't recive verification email? \nResend",
+  "incidentsScreenText":"Map of all incidents",
+  "incidentCreated":"Successfully added incident"
   
 }

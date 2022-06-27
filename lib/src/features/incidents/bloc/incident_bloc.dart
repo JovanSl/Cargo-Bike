@@ -22,6 +22,7 @@ class IncidentBloc extends Bloc<IncidentEvent, IncidentState> {
       await repository.addIncident(
         event.incident,
       );
+      emit(IncidentSuccessState());
       add(GetAllIncidentsEvent());
     } catch (e) {
       emit(IncidentErrorState());

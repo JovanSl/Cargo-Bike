@@ -18,3 +18,5 @@ class AllIncidentsState extends IncidentState {
 class IncidentLoadingState extends IncidentState {}
 
 class IncidentErrorState extends IncidentState {}
+
+class IncidentSuccessState extends IncidentState {}

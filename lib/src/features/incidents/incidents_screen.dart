@@ -1,11 +1,12 @@
 import 'package:cargo_bike/src/components/progress_indicator.dart';
+import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:cargo_bike/src/features/new_incident/new_incident_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'bloc/incident_bloc.dart';
 import 'components/map_popup.dart';
 
@@ -25,6 +26,7 @@ class _IncidentScreenState extends State<IncidentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: CargoBikeColors.lightGreen,
         onPressed: () {
           Navigator.push(
             context,
@@ -35,10 +37,16 @@ class _IncidentScreenState extends State<IncidentScreen> {
         },
         child: const Icon(Icons.add),
       ),
-      appBar: AppBar(title: const Text('KURIR')),
+      appBar: AppBar(
+        backgroundColor: CargoBikeColors.lightGreen,
+        title: Text(AppLocalizations.of(context)!.incidentsScreenText),
+      ),
       body: BlocConsumer<IncidentBloc, IncidentState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is IncidentSuccessState) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(AppLocalizations.of(context)!.incidentCreated)));
+          }
         },
         builder: (context, state) {
           if (state is IncidentLoadingState) {

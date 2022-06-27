@@ -48,6 +48,8 @@
   "ifCourrier":"Registruj se kao kurir?",
   "sendAgain":"Pošalji ponovo",
   "registrationSuccesfull":"Tvoj nalog je uspešno kreiran. Proveri svoj mejl i verifikujte se putem linka",
-  "noMail":"Nisi dobio/la mail? Klikni na dugme ispod za ponovno slanje"
+  "noMail":"Nisi dobio/la mail? Klikni na dugme ispod za ponovno slanje",
+  "incidentsScreenText":"Mapa svih incidenata",
+  "incidentCreated":"Uspešno dodat incident"
   
 }
