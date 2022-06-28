@@ -62,7 +62,7 @@ class _IncidentScreenState extends State<IncidentScreen> {
                 center: LatLng(45.2623752, 19.84910386),
                 zoom: 12.0,
                 onTap: (_, __) => _popupLayerController
-                    .hideAllPopups(), // Hide popup when the map is tapped.
+                    .hideAllPopups(),
               ),
               children: [
                 TileLayerWidget(

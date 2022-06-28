@@ -50,6 +50,10 @@
   "registrationSuccesfull":"Tvoj nalog je uspešno kreiran. Proveri svoj mejl i verifikujte se putem linka",
   "noMail":"Nisi dobio/la mail? Klikni na dugme ispod za ponovno slanje",
   "incidentsScreenText":"Mapa svih incidenata",
-  "incidentCreated":"Uspešno dodat incident"
+  "incidentCreated":"Uspešno dodat incident",
+  "locationFromMap":"Izaberite lokaciju sa mape",
+  "locationCurrent":"Izaberite trenutnu lokaciju",
+  "addIncident":"Dodajte incident",
+  "describeIncident":"Opišite šta nije uredu sa ovom lokacijom"
   
 }
