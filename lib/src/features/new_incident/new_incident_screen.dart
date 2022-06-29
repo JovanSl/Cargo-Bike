@@ -100,14 +100,16 @@ class _NewIncidentScreenState extends State<NewIncidentScreen> {
                   MaterialPageRoute(
                       builder: (context) => const LocationPickerMap()),
                 );
-                placemarks = await geocoding.placemarkFromCoordinates(
-                    pickedLocation.lat, pickedLocation.lng);
-                setState(() {
-                  lng = pickedLocation.lng;
-                  lat = pickedLocation.lat;
+                if (pickedLocation != null) {
+                  placemarks = await geocoding.placemarkFromCoordinates(
+                      pickedLocation.lat, pickedLocation.lng);
+                  setState(() {
+                    lng = pickedLocation.lng;
+                    lat = pickedLocation.lat;
 
-                  placemarks = placemarks;
-                });
+                    placemarks = placemarks;
+                  });
+                }
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
