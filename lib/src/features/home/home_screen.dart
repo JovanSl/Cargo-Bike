@@ -1,3 +1,4 @@
+import 'package:cargo_bike/src/components/progress_indicator.dart';
 import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:cargo_bike/src/features/history/history_screen.dart';
 import 'package:cargo_bike/src/features/main/main_screen.dart';
@@ -102,7 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       );
-    } else {
+    } else if (context.select((SettingsBloc bloc) => bloc.isCourrier) ==
+        false) {
       return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: PageView(
@@ -153,6 +155,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       );
+    } else {
+      return const Scaffold(body: CargoBikeProgressIndicator());
     }
   }
 }
