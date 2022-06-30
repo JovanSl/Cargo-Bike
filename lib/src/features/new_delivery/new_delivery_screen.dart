@@ -1,3 +1,4 @@
+import 'package:cargo_bike/src/components/multi_line_input_field.dart';
 import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:cargo_bike/src/models/recipient.dart';
 import 'package:cargo_bike/src/models/sender.dart';
@@ -177,7 +178,7 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                             controller: _recipientPhone,
                             lable: AppLocalizations.of(context)!.phoneNumber,
                           ),
-                          InputFieldComponent(
+                          MultiLineInputField(
                             controller: _additionalInfo,
                             lable: AppLocalizations.of(context)!.additionalInfo,
                           ),
