@@ -55,6 +55,7 @@
   "locationFromMap":"Pick Location from the map",
   "locationCurrent":"Pick current location",
   "addIncident":"Add Incident",
-  "describeIncident":"Describe whats wrong on this location"
+  "describeIncident":"Describe whats wrong on this location",
+  "emptyHistory":"History is empty"
   
 }

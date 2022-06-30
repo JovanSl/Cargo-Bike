@@ -54,6 +54,7 @@
   "locationFromMap":"Izaberite lokaciju sa mape",
   "locationCurrent":"Izaberite trenutnu lokaciju",
   "addIncident":"Dodajte incident",
-  "describeIncident":"Opišite šta nije uredu sa ovom lokacijom"
+  "describeIncident":"Opišite šta nije uredu sa ovom lokacijom",
+  "emptyHistory":"Istorija je prazna"
   
 }
