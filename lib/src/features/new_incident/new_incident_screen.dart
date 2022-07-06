@@ -1,10 +1,12 @@
-import 'package:cargo_bike/src/components/input_field_component.dart';
+import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:cargo_bike/src/features/new_incident/components/location_picker_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location/location.dart' as lokacija;
 import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../components/multi_line_input_field.dart';
 import '../../models/incident.dart';
 import '../../models/location.dart';
 import '../incidents/bloc/incident_bloc.dart';
@@ -31,58 +33,74 @@ class _NewIncidentScreenState extends State<NewIncidentScreen> {
     lokacija.LocationData _locationData;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Incident'),
+        backgroundColor: CargoBikeColors.lightGreen,
+        title: Text(AppLocalizations.of(context)!.addIncident),
         automaticallyImplyLeading: true,
       ),
       body: SizedBox(
         child: Column(
           children: <Widget>[
             const SizedBox(height: 20),
-            InputFieldComponent(
-              lable: 'Poruka',
+            MultiLineInputField(
+              lable: AppLocalizations.of(context)!.describeIncident,
               controller: message,
             ),
             Text(placemarks?.first.toString() == null
                 ? ''
-                : placemarks!.first.street.toString()),
+                : placemarks!.first.street.toString() +
+                    ", " +
+                    placemarks!.first.locality.toString()),
             const SizedBox(height: 20),
-            ElevatedButton(
-                onPressed: () async {
-                  _serviceEnabled = await location.serviceEnabled();
+            GestureDetector(
+              onTap: () async {
+                _serviceEnabled = await location.serviceEnabled();
+                if (!_serviceEnabled) {
+                  _serviceEnabled = await location.requestService();
                   if (!_serviceEnabled) {
-                    _serviceEnabled = await location.requestService();
-                    if (!_serviceEnabled) {
-                      return;
-                    }
+                    return;
                   }
+                }
 
-                  _permissionGranted = await location.hasPermission();
-                  if (_permissionGranted == lokacija.PermissionStatus.denied) {
-                    _permissionGranted = await location.requestPermission();
-                    if (_permissionGranted !=
-                        lokacija.PermissionStatus.granted) {
-                      return;
-                    }
+                _permissionGranted = await location.hasPermission();
+                if (_permissionGranted == lokacija.PermissionStatus.denied) {
+                  _permissionGranted = await location.requestPermission();
+                  if (_permissionGranted != lokacija.PermissionStatus.granted) {
+                    return;
                   }
+                }
 
-                  _locationData = await location.getLocation();
-                  placemarks = await geocoding.placemarkFromCoordinates(
-                      _locationData.latitude!, _locationData.longitude!);
-                  setState(() {
-                    lng = _locationData.longitude;
-                    lat = _locationData.latitude;
-                    placemarks = placemarks;
-                  });
-                },
-                child: const Text('Get Current Location')),
+                _locationData = await location.getLocation();
+                placemarks = await geocoding.placemarkFromCoordinates(
+                    _locationData.latitude!, _locationData.longitude!);
+                setState(() {
+                  lng = _locationData.longitude;
+                  lat = _locationData.latitude;
+                  placemarks = placemarks;
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.gps_fixed,
+                    color: CargoBikeColors.lightGreen,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(AppLocalizations.of(context)!.locationCurrent),
+                ],
+              ),
+            ),
             const SizedBox(height: 20),
-            ElevatedButton(
-                onPressed: () async {
-                  final pickedLocation = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LocationPickerMap()),
-                  );
+            GestureDetector(
+              onTap: () async {
+                final pickedLocation = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LocationPickerMap()),
+                );
+                if (pickedLocation != null) {
                   placemarks = await geocoding.placemarkFromCoordinates(
                       pickedLocation.lat, pickedLocation.lng);
                   setState(() {
@@ -91,24 +109,45 @@ class _NewIncidentScreenState extends State<NewIncidentScreen> {
 
                     placemarks = placemarks;
                   });
-                },
-                child: const Text('Pick location from map')),
+                }
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.map_outlined,
+                    color: CargoBikeColors.lightGreen,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(AppLocalizations.of(context)!.locationFromMap),
+                ],
+              ),
+            ),
             const SizedBox(height: 20),
-            ElevatedButton(
-                onPressed: () {
-                  context.read<IncidentBloc>().add(
-                        CreateIncidentEvent(
-                          Incident(
-                              location: Location(
-                                lng: lng ?? 0,
-                                lat: lat ?? 0,
-                              ),
-                              message: message.text),
-                        ),
-                      );
-                  Navigator.pop(context);
-                },
-                child: const Text('Send'))
+            ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(125, 50),
+                    primary: CargoBikeColors.lightGreen,
+                  ),
+                  onPressed: () {
+                    context.read<IncidentBloc>().add(
+                          CreateIncidentEvent(
+                            Incident(
+                                location: Location(
+                                  lng: lng ?? 0,
+                                  lat: lat ?? 0,
+                                ),
+                                message: message.text),
+                          ),
+                        );
+                    Navigator.pop(context);
+                  },
+                  child: Text(AppLocalizations.of(context)!.submit)),
+            )
           ],
         ),
       ),

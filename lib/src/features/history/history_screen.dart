@@ -32,7 +32,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
             }
             if (state is NoHistoryState) {
               return GestureDetector(
-                  onTap: _getData, child: const EmptyDeliveryList());
+                  onTap: _getData,
+                  child: EmptyDeliveryList(
+                    icon: Icons.history,
+                    text: AppLocalizations.of(context)!.emptyHistory,
+                  ));
             }
             if (state is AllHistoryState) {
               return Padding(

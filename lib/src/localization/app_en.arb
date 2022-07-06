@@ -49,6 +49,13 @@
   "ifCourrier":"Register as a courrier?",
   "sendAgain":"Resend",
   "registrationSuccesfull":"Your account has been successfully created. \nCheck your email for verification link.",
-  "noMail":"Didn't recive verification email? \nResend"
+  "noMail":"Didn't recive verification email? \nResend",
+  "incidentsScreenText":"Map of all incidents",
+  "incidentCreated":"Successfully added incident",
+  "locationFromMap":"Pick Location from the map",
+  "locationCurrent":"Pick current location",
+  "addIncident":"Add Incident",
+  "describeIncident":"Describe whats wrong on this location",
+  "emptyHistory":"History is empty"
   
 }

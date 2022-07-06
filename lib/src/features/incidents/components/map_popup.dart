@@ -32,9 +32,9 @@ class _MapPopupState extends State<MapPopup> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          children: const <Widget>[
+          children: <Widget>[
             Text(
-              'Popup for a marker!',
+              widget.text,
               overflow: TextOverflow.fade,
               softWrap: false,
               style: TextStyle(

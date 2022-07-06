@@ -11,7 +11,7 @@ class LocationPickerMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double lng = 0, lat = 0;
+    double lng = 19.84910386, lat = 45.2623752;
     final PopupController _popupLayerController = PopupController();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
