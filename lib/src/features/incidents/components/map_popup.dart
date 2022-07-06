@@ -37,7 +37,7 @@ class _MapPopupState extends State<MapPopup> {
               widget.text,
               overflow: TextOverflow.fade,
               softWrap: false,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 14.0,
               ),
