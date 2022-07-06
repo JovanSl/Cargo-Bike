@@ -24,7 +24,7 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(children: <Widget>[
-        Text(AppLocalizations.of(context)!.loginForm,
+        Text(AppLocalizations.of(context)!.appName,
             style: CargoBikeStyle.textStyle.heading1Text),
         const HeightBox(),
         const LoginErrorMessage(),

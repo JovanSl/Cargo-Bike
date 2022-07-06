@@ -19,7 +19,8 @@ class AddressInput extends StatelessWidget {
     required TextEditingController senderAddress,
     required TextEditingController streetnumber,
     required this.mainController,
-    required this.lable,
+    required this.lableStreetNumber,
+    required this.lableAddress,
     required this.form,
   })  : _recipientName = recipientName,
         _recipientAddress = recipientAddress,
@@ -42,7 +43,8 @@ class AddressInput extends StatelessWidget {
   final TextEditingController _senderPhone;
   final TextEditingController _senderAddress;
   final TextEditingController _streetnumber;
-  final String lable;
+  final String lableStreetNumber;
+  final String lableAddress;
   final String form;
 
   @override
@@ -65,7 +67,7 @@ class AddressInput extends StatelessWidget {
                 _checkUserInput(context);
               },
               controller: mainController,
-              lable: lable,
+              lable: lableAddress,
             ),
           ),
           Container(
@@ -75,7 +77,7 @@ class AddressInput extends StatelessWidget {
               paddingR: 40,
               paddingL: 10,
               controller: _streetnumber,
-              lable: 'Broj',
+              lable: lableStreetNumber,
             ),
           )
         ],

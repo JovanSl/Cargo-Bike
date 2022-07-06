@@ -7,27 +7,45 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../models/user.dart';
 
 class AuthRepository {
-  FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final _users = FirebaseFirestore.instance.collection('userInfo');
+
+  bool checkIfVerified() {
+    _auth.currentUser!
+        .reload()
+        .then((value) => _auth.currentUser!.emailVerified);
+    return _auth.currentUser!.emailVerified;
+  }
+
+  Future<void> sendVerificationMail() async {
+    if (_auth.currentUser != null) {
+      await _auth.currentUser!.sendEmailVerification();
+    }
+  }
 
   Future<UserCredential> logInWithCredentials(
       {required String email, required String password}) async {
-    return await auth.signInWithEmailAndPassword(
+    return await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
   }
 
-  Future<UserCredential> signUpWithCredentials(
+  Future<UserCredential> signUpWithCredentials(UserModel user,
       {required String email, required String password}) async {
-    return await auth.createUserWithEmailAndPassword(
+    return await _auth
+        .createUserWithEmailAndPassword(
       email: email,
       password: password,
-    );
+    )
+        .whenComplete(() {
+      user.userId = FirebaseAuth.instance.currentUser!.uid;
+      _users.doc(FirebaseAuth.instance.currentUser!.uid).set(user.toJson());
+    });
   }
 
   Future<void> signOut() async {
-    await auth.signOut();
+    await _auth.signOut();
   }
 
   Future<String> getUserId() async {
@@ -35,7 +53,7 @@ class AuthRepository {
   }
 
   Future<bool> isSignedIn() async {
-    User? currentUser = auth.currentUser;
+    User? currentUser = _auth.currentUser;
     currentUser ??= await FirebaseAuth.instance.authStateChanges().first;
 
     return currentUser != null;

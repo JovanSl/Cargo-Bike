@@ -47,7 +47,11 @@ class _MainScreenState extends State<MainScreen> {
             }
             if (state is NoDeliveriesState) {
               return GestureDetector(
-                  onTap: _getData, child: const EmptyDeliveryList());
+                  onTap: _getData,
+                  child: EmptyDeliveryList(
+                    icon: Icons.directions_bike,
+                    text: AppLocalizations.of(context)!.noDeliveries,
+                  ));
             }
             if (state is AllDeliveriesState) {
               return Padding(

@@ -1,5 +1,6 @@
 {
   "appTitle": "cargo_bike",
+  "appName":"Cargo Bike",
   "test":"Sve Dostave",
   "language":"Jezik",
   "settings":"Podešavanja",
@@ -24,9 +25,9 @@
   "loginForm":"Forma za login",
   "register":"Registruj se",
   "logIn":"Uloguj se",
-  "registerForm":"Forma za registraciju",
+  "registerForm":"Nemate nalog? Registrujte se",
   "confirmPassword":"Potvrdite lozinku",
-  "backToLogIn":"Povratak na login",
+  "backToLogIn":"Imate nalog? Ulogujte se",
   "gallery":"Galerija",
   "camera":"Kamera",
   "lastName":"Prezime",
@@ -37,5 +38,23 @@
   "to":"Do",
   "details":"Detalji",
   "cantDisplayMap":"Za zadatu lokaciju ne možemo prikazati mapu!",
-  "errorLocationFormat":"Format adrese bi trebao biti: Ulica  broj, grad"
+  "errorLocationFormat":"Format adrese bi trebao biti: Ulica  broj, grad",
+  "logoutMessage":"Da li ste sigurni da želite da se odjavite?",
+  "yes":"Da",
+  "no":"Ne",
+  "streetNumber":"Broj ulice",
+  "deleteSuccessful":"Uspešno obrisano",
+  "deleteConfirm":"Da li ste sigurni da želite da obrišete ovu isporuku?",
+  "ifCourrier":"Registruj se kao kurir?",
+  "sendAgain":"Pošalji ponovo",
+  "registrationSuccesfull":"Tvoj nalog je uspešno kreiran. Proveri svoj mejl i verifikujte se putem linka",
+  "noMail":"Nisi dobio/la mail? Klikni na dugme ispod za ponovno slanje",
+  "incidentsScreenText":"Mapa svih incidenata",
+  "incidentCreated":"Uspešno dodat incident",
+  "locationFromMap":"Izaberite lokaciju sa mape",
+  "locationCurrent":"Izaberite trenutnu lokaciju",
+  "addIncident":"Dodajte incident",
+  "describeIncident":"Opišite šta nije uredu sa ovom lokacijom",
+  "emptyHistory":"Istorija je prazna"
+  
 }

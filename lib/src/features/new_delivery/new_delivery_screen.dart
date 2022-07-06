@@ -1,3 +1,4 @@
+import 'package:cargo_bike/src/components/multi_line_input_field.dart';
 import 'package:cargo_bike/src/constants/colors.dart';
 import 'package:cargo_bike/src/models/recipient.dart';
 import 'package:cargo_bike/src/models/sender.dart';
@@ -148,8 +149,10 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                               senderPhone: _senderPhone,
                               senderAddress: _senderAddress,
                               streetnumber: _senderStreetnumber,
-                              lable: AppLocalizations.of(context)!
+                              lableAddress: AppLocalizations.of(context)!
                                   .receptionAddress,
+                              lableStreetNumber:
+                                  AppLocalizations.of(context)!.streetNumber,
                               form: 'sender',
                             ),
                             if (state is SuggestAddressState)
@@ -175,7 +178,7 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                             controller: _recipientPhone,
                             lable: AppLocalizations.of(context)!.phoneNumber,
                           ),
-                          InputFieldComponent(
+                          MultiLineInputField(
                             controller: _additionalInfo,
                             lable: AppLocalizations.of(context)!.additionalInfo,
                           ),
@@ -190,8 +193,10 @@ class _NewDeliveryScreenState extends State<NewDeliveryScreen> {
                             senderPhone: _senderPhone,
                             senderAddress: _senderAddress,
                             streetnumber: _recipientStreetnumber,
-                            lable:
+                            lableAddress:
                                 AppLocalizations.of(context)!.deliveryAddress,
+                            lableStreetNumber:
+                                AppLocalizations.of(context)!.streetNumber,
                             form: 'receipant',
                           ),
                           if (state is SuggestAddressState)

@@ -29,7 +29,8 @@ class InputFieldComponent extends StatelessWidget {
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
           isCollapsed: true,
-          contentPadding: const EdgeInsets.only(left: 30, top: 24, bottom: 16),
+          contentPadding:
+              const EdgeInsets.only(left: 15, top: 24, bottom: 16, right: 15),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.lightGreen.withOpacity(0.4)),
             borderRadius: BorderRadius.circular(8),

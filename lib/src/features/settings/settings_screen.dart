@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../authentication/bloc/auth_bloc.dart';
+import 'components/logout_alert_dialog.dart';
 import 'settings_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -29,6 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final TextEditingController lastName = TextEditingController();
   final TextEditingController address = TextEditingController();
   final TextEditingController phone = TextEditingController();
+  bool? _isCourrier;
   bool visible = false;
   String imageUrl = '';
   File? image;
@@ -51,9 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: GestureDetector(
-                  onTap: () {
-                    context.read<AuthBloc>().add(LogOutEvent());
-                  },
+                  onTap: () => logoutDialog(context),
                   child: Text(
                     AppLocalizations.of(context)!.logout,
                     style: CargoBikeStyle.textStyle.errorText
@@ -91,6 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 phone.text = state.user.phone!;
                 imageUrl = state.user.imageUrl ?? '';
                 visible = false;
+                _isCourrier = state.user.isCourrier;
               }
               if (state is UserButtonState) {
                 firstName.text = state.user.firstName!;
@@ -99,6 +99,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 phone.text = state.user.phone!;
                 imageUrl = state.user.imageUrl ?? '';
                 visible = true;
+                _isCourrier = state.user.isCourrier;
               }
             }
             return Form(
@@ -111,6 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             address: address.text,
                             phone: phone.text,
                             imageUrl: imageUrl,
+                            isCourrier: _isCourrier,
                           ),
                           image),
                     );
@@ -133,6 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   address: address.text,
                                   phone: phone.text,
                                   imageUrl: imageUrl,
+                                  isCourrier: _isCourrier,
                                 ),
                                 image),
                           );
@@ -174,6 +177,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                         address: address.text,
                                         phone: phone.text,
                                         imageUrl: imageUrl,
+                                        isCourrier: _isCourrier,
                                       ),
                                       image));
                             },

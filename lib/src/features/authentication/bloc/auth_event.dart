@@ -12,15 +12,17 @@ class RegisterEvent extends AuthEvent {
   final String email;
   final String password;
   final String confirm;
+  final bool ifCourrier;
 
   const RegisterEvent({
+    required this.ifCourrier,
     required this.email,
     required this.password,
     required this.confirm,
   });
 
   @override
-  List<Object> get props => [email, password, confirm];
+  List<Object> get props => [email, password, confirm, ifCourrier];
 }
 
 class LogInEvent extends AuthEvent {
@@ -41,3 +43,5 @@ class LogOutEvent extends AuthEvent {}
 class CheckUserStatusEvent extends AuthEvent {}
 
 class SwitchToRegister extends AuthEvent {}
+
+class SendVerificationEmailEvent extends AuthEvent {}
